@@ -1,0 +1,22 @@
+{
+    "name": "com.tariksavas.tarject",
+    "version": "0.1.1",
+    "displayName": "Tarject",
+    "description": "This is a Dependency Injection Framework",
+    "unity": "2019.1",
+    "unityRelease": "0b5",
+    "documentationUrl": "https://github.com/tariksavas/tarject/blob/main/README.md",
+    "changelogUrl": "https://github.com/tariksavas/tarject/releases",
+    "licensesUrl": "https://github.com/tariksavas/tarject/blob/main/LICENSE.md",
+    "keywords": [
+        "di",
+        "dependency",
+        "injection",
+        "framework"
+    ],
+    "author": {
+        "name": "tariksavas",
+        "email": "tariksavas26@gmail.com",
+        "url": "https://www.tariksavas.com"
+    }
+}
