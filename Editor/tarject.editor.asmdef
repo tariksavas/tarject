@@ -1,3 +1,16 @@
 {
-	"name": "tarject.editor"
+    "name": "tarject.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a3bfbce2c0633954ca981cb73b4f2aa7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

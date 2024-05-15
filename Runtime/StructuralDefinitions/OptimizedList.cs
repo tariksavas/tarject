@@ -1,13 +1,16 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Tarject.Runtime.StructuralDefinitions
 {
+    [Serializable]
     public class OptimizedList<T>
     {
         public T this[int i] => _array[i];
 
         public int Count => _array.Length;
-
+        
+        [SerializeField]
         private T[] _array;
 
         public OptimizedList()
@@ -78,6 +81,11 @@ namespace Tarject.Runtime.StructuralDefinitions
             Array.Resize(ref _array, _array.Length - 1);
         }
 
+        public void Clear()
+        {
+           new OptimizedList<T>();
+        }
+
         public bool Contains(T t)
         {
             for (int index = 0; index < _array.Length; index++)
@@ -89,6 +97,22 @@ namespace Tarject.Runtime.StructuralDefinitions
             }
 
             return false;
+        }
+
+        public T Find(Predicate<T> match)
+        {
+            T matchedElement = default;
+
+            for (int index = 0; index < _array.Length; index++)
+            {
+                if (match(_array[index]))
+                {
+                    matchedElement = _array[index];
+                    break;
+                }
+            }
+
+            return matchedElement;
         }
 
         public OptimizedList<T> FindAll(Predicate<T> match)
@@ -105,20 +129,18 @@ namespace Tarject.Runtime.StructuralDefinitions
 
             return matchedElements;
         }
-
-        public T Find(Predicate<T> match)
+        
+        public bool Exist(Predicate<T> match)
         {
-            T matchedElement = default;
-
             for (int index = 0; index < _array.Length; index++)
             {
                 if (match(_array[index]))
                 {
-                    matchedElement = _array[index];
+                    return true;
                 }
             }
 
-            return matchedElement;
+            return false;
         }
 
         public void ForEach(Action<T> match)
@@ -128,6 +150,5 @@ namespace Tarject.Runtime.StructuralDefinitions
                 match(_array[index]);
             }
         }
-
     }
 }
