@@ -22,7 +22,7 @@ namespace Runtime.PlayerMovementModule.Controller
 
         public void Update()
         {
-            Debug.Log($"PlayerMovementController --> InputHandler from hierarchy - InputHandling: {_inputHandler.inputHandling}");
+            Debug.Log($"[PROOF] - PlayerMovementController --> InputHandler from hierarchy - InputHandling: {_inputHandler.inputHandling}");
         }
 
         public void Dispose()

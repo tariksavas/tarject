@@ -1,7 +1,7 @@
-using Tarject.Runtime.Core;
 using System;
 using System.Reflection;
 using Tarject.Runtime.Core.Context;
+using Tarject.Runtime.Core.Injecter;
 
 namespace Tarject.Runtime.Utility
 {
@@ -47,6 +47,32 @@ namespace Tarject.Runtime.Utility
                 : orderedConstructorInfo;
         }
 
+        public static object[] GetInjectableParameterObjects(this Type type, Context context)
+        {
+            object[] objects = Array.Empty<object>();
+
+            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
+            if (constructorInfo == null)
+            {
+                return objects;
+            }
+
+            ParameterInfo[] parameters = constructorInfo.GetParameters();
+            for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
+            {
+                ParameterInfo parameter = parameters[parameterIndex];
+                Type parameterType = parameter.ParameterType;
+
+                Inject injectAttribute = parameter.GetCustomAttribute<Inject>();
+                object parameterObject = context.Resolve<object>(parameterType, injectAttribute?.Id);
+
+                Array.Resize(ref objects, objects.Length + 1);
+                objects[^1] = parameterObject;
+            }
+
+            return objects;
+        }
+
         public static void InjectToConstructor(this object createdObject, Context context)
         {
             Type type = createdObject.GetType();
@@ -74,20 +100,20 @@ namespace Tarject.Runtime.Utility
             constructorInfo.Invoke(createdObject, objects);
         }
 
-        public static void InjectToFields(this object obj, Context context)
+        public static void InjectToFields(this object createdObject, Context context)
         {
-            Type type = obj.GetType();
+            Type type = createdObject.GetType();
             FieldInfo[] fields = type.GetFields(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 
-            for (int index = 0; index < fields.Length; index++)
+            for (int fieldIndex = 0; fieldIndex < fields.Length; fieldIndex++)
             {
-                FieldInfo field = fields[index];
+                FieldInfo field = fields[fieldIndex];
 
                 if (Attribute.IsDefined(field, typeof(Inject)))
                 {
                     Inject injectAttribute = field.GetCustomAttribute<Inject>();
-                    field.SetValue(obj, context.Resolve<object>(field.FieldType, injectAttribute?.Id));
+                    field.SetValue(createdObject, context.Resolve<object>(field.FieldType, injectAttribute?.Id));
                 }
             }
         }
@@ -110,9 +136,9 @@ namespace Tarject.Runtime.Utility
                 object[] objects = Array.Empty<object>();
 
                 ParameterInfo[] parameters = method.GetParameters();
-                for (int j = 0; j < parameters.Length; j++)
+                for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
                 {
-                    ParameterInfo parameter = parameters[j];
+                    ParameterInfo parameter = parameters[parameterIndex];
                     Type parameterType = parameter.ParameterType;
 
                     Inject injectAttribute = parameter.GetCustomAttribute<Inject>();

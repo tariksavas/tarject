@@ -1,4 +1,6 @@
-﻿namespace Runtime.InventoryModule.Model
+﻿using UnityEngine;
+
+namespace Runtime.InventoryModule.Model
 {
     public readonly struct InventoryItem
     {
@@ -7,11 +9,14 @@
 
         public readonly string ItemName;
 
-        public InventoryItem(int type, int value, string itemName)
+        public readonly Color ItemColor;
+
+        public InventoryItem(int type, int value, string itemName, Color itemColor)
         {
             Type = type;
             Value = value;
             ItemName = itemName;
+            ItemColor = itemColor;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Runtime.InventoryModule.Model;
 using Runtime.Signal;
-using Tarject.Runtime.Core;
+using Tarject.Runtime.Core.Factory;
+using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.SignalBus.Controller;
 using UnityEngine;
 
@@ -16,6 +17,15 @@ namespace Runtime.InventoryModule.UI
         
         [Inject]
         private readonly SignalController _signalController;
+        
+        [Inject]
+        private readonly GameObjectFactory _gameObjectFactory;
+
+        [SerializeField]
+        private Transform _content;
+        
+        [SerializeField]
+        private InventoryUIItem _inventoryUIItemPrefab;
 
         protected override void Awake()
         {
@@ -41,15 +51,13 @@ namespace Runtime.InventoryModule.UI
         {
             if (inventoryData.items == null || inventoryData.items.Count == 0)
             {
-                Debug.LogWarning($"InventoryPanel --> InventoryData items empty! Id: {id}");
+                Debug.Log($"[PROOF] - InventoryPanel --> [{id}] items empty!");
                 return;
             }
 
             for (int index = 0; index < inventoryData.items.Count; index++)
             {
-                InventoryItem item = inventoryData.items[index];
-
-                Debug.Log($"InventoryPanel --> {index + 1}.=> type: {item.Type} - value: {item.Value} - name: {item.ItemName}");
+                _gameObjectFactory.Create(_inventoryUIItemPrefab, _content, inventoryData.items[index]);
             }
         }
 
