@@ -1,7 +1,7 @@
 ﻿using Tarject.Runtime.Utility;
 using UnityEngine;
 
-namespace Tarject.Runtime.Core
+namespace Tarject.Runtime.Core.Injecter
 {
     public class SceneInjecter : MonoBehaviour
     {

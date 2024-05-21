@@ -1,6 +1,7 @@
 ﻿using Runtime.InventoryModule.Controller;
 using Runtime.InventoryModule.Model;
 using Tarject.Runtime.Core.Context;
+using Tarject.Runtime.Core.Factory;
 using Tarject.Runtime.Core.Installer;
 
 namespace Runtime.InventoryModule.Installer
@@ -12,6 +13,8 @@ namespace Runtime.InventoryModule.Installer
             container.Bind<InventoryData>().WithId("inventory1");
             container.Bind<InventoryData>().WithId("inventory2");
             container.Bind<InventoryController>().WithTriggerableInterfaces();
+
+            container.BindFactory<GameObjectFactory>();
         }
     }
 }

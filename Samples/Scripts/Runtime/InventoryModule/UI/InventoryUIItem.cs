@@ -1,62 +1,30 @@
 ﻿using Runtime.InventoryModule.Model;
-using Runtime.Signal;
-using Tarject.Runtime.Core;
-using Tarject.Runtime.SignalBus.Controller;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Runtime.InventoryModule.UI
 {
-    public class InventoryUIItem : MonoInjecter
+    public class InventoryUIItem : MonoBehaviour
     {
-        private InventoryData _inventoryData;
+        [SerializeField]
+        private Text _itemNameText;
+        [SerializeField]
+        private Text _itemCountText;
         
-        private SignalController _signalController;
+        [SerializeField]
+        private Image _itemImage;
 
-        [Inject]
-        public void Inject([Inject("inventory1")] InventoryData inventoryData, SignalController signalController)
+        public void InitializeFactory(InventoryItem inventoryItem)
         {
-            _inventoryData = inventoryData;
-            _signalController = signalController;
+            InitializeItem(inventoryItem);
         }
 
-        protected override void Awake()
+        private void InitializeItem(InventoryItem inventoryItem)
         {
-            base.Awake();
+            _itemNameText.text = inventoryItem.ItemName;
+            _itemCountText.text = inventoryItem.Value.ToString();
 
-            SubscribeEvents();
-        }
-
-        private void SubscribeEvents()
-        {
-            _signalController.Subscribe<UserInventoryFetchedSignal>(OnUserInventoryFetched);
-        }
-
-        private void OnUserInventoryFetched(UserInventoryFetchedSignal signal)
-        {
-            InitializeItem(_inventoryData);
-        }
-
-        private void InitializeItem(InventoryData inventoryData)
-        {
-            if (inventoryData.items == null || inventoryData.items.Count == 0)
-            {
-                Debug.LogError($"InventoryData items null or empty!");
-                return;
-            }
-
-            InventoryItem item = inventoryData.items[0];
-
-            Debug.Log($"InventoryUIItem --> type: {item.Type} - value: {item.Value} - name: {item.ItemName}");
-        }
-
-        private void UnsubscribeEvents()
-        {
-            _signalController.Unsubscribe<UserInventoryFetchedSignal>(OnUserInventoryFetched);
-        }
-
-        private void OnDestroy()
-        {
-            UnsubscribeEvents();
+            _itemImage.color = inventoryItem.ItemColor;
         }
     }
 }

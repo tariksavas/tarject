@@ -12,7 +12,7 @@ namespace Tarject.Runtime.Core.Context
         [SerializeField]
         private OptimizedList<GameObjectInstaller> _gameObjectInstallers = new OptimizedList<GameObjectInstaller>();
 
-        private DIContainer _container = new DIContainer();
+        private DIContainer _container;
 
         protected DIContainer Container => _container;
 
@@ -24,6 +24,8 @@ namespace Tarject.Runtime.Core.Context
 
         protected virtual void Awake()
         {
+            _container = new DIContainer(this);
+
             InstallMonoInstallers();
         }
 

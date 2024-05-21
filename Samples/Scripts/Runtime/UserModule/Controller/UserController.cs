@@ -2,7 +2,7 @@
 using Runtime.Signal;
 using Runtime.UserModule.Model;
 using System.Threading.Tasks;
-using Tarject.Runtime.Core;
+using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;
 

@@ -10,6 +10,13 @@ namespace Tarject.Runtime.Core.Context
     {
         private readonly OptimizedList<BindedObject> _bindedObjects = new OptimizedList<BindedObject>();
 
+        private readonly Context _context;
+
+        public DIContainer(Context context)
+        {
+            _context = context;
+        }
+
         public BindedObject Bind<T>() where T : class
         {
             Type type = typeof(T);
@@ -57,11 +64,26 @@ namespace Tarject.Runtime.Core.Context
             return bindedObject;
         }
 
+        public BindedObject BindFactory<T>() where T : Factory.Factory
+        {
+            Type type = typeof(T);
+
+            object createdObject = Activator.CreateInstance(type);
+
+            ((T)createdObject).SetContext(_context);
+
+            BindedObject bindedObject = new BindedObject(type, createdObject);
+
+            _bindedObjects.Add(bindedObject);
+
+            return bindedObject;
+        }
+
         public T Resolve<T>(Type type = null, string id = "") where T : class
         {
             type ??= typeof(T);
 
-            Predicate<BindedObject> predicate = string.IsNullOrEmpty(id) 
+            Predicate<BindedObject> predicate = string.IsNullOrEmpty(id)
                 ? x => x.Type == type || x.InterfaceType == type
                 : x => x.Id == id && (x.Type == type || x.InterfaceType == type);
 
