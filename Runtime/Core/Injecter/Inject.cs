@@ -1,13 +1,11 @@
 using System;
 
-namespace Tarject.Runtime.Core
+namespace Tarject.Runtime.Core.Injecter
 {
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Parameter, AllowMultiple = false)]
     public class Inject : Attribute
     {
         public readonly string Id;
-
-        public readonly bool withId;
 
         public Inject()
         {
@@ -16,7 +14,6 @@ namespace Tarject.Runtime.Core
         public Inject(string id)
         {
             Id = id;
-            withId = true;
         }
     }
 }

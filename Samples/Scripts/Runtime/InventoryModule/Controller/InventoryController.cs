@@ -1,9 +1,11 @@
 ﻿using Runtime.ConfigurationModule.Services;
 using Runtime.InventoryModule.Model;
+using Runtime.InventoryModule.UI;
 using Runtime.Signal;
 using Runtime.UserModule.Model;
 using System;
-using Tarject.Runtime.Core;
+using Tarject.Runtime.Core.Factory;
+using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;
 using Tarject.Runtime.StructuralDefinitions;
@@ -55,7 +57,7 @@ namespace Runtime.InventoryModule.Controller
             _inventoryData1.items = new OptimizedList<InventoryItem>(inventoryData);
             _inventoryData2.items = new OptimizedList<InventoryItem>();
 
-            Debug.LogWarning($"InventoryController --> InventoryData with Id: [inventory1] must be contain data but Id: [inventory2] must be empty!");
+            Debug.Log($"[PROOF] - InventoryController --> InventoryData with Id: [inventory1] must be contain data but Id: [inventory2] must be empty!");
 
             _signalController.Fire(new UserInventoryFetchedSignal());
         }

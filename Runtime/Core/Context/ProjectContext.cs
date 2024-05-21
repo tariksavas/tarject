@@ -18,8 +18,6 @@ namespace Tarject.Runtime.Core.Context
                 {
                     DontDestroyOnLoad(gameObject);
                 }
-
-                InstallRegistry();
             }
             else
             {
@@ -28,6 +26,8 @@ namespace Tarject.Runtime.Core.Context
             }
 
             base.Awake();
+
+            InstallRegistry();
         }
 
         private void InstallRegistry()
