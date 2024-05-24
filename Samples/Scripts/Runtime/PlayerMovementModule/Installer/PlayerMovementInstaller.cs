@@ -9,7 +9,7 @@ namespace Runtime.PlayerMovementModule.Installer
         public override void Install(DIContainer container)
         {
             container.BindFromHierarchy<InputHandler>();
-            container.Bind<PlayerMovementController>().WithTriggerableInterfaces();
+            container.Bind<PlayerMovementController>();
         }
     }
 }

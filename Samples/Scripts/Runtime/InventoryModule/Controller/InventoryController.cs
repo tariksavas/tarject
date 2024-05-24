@@ -1,10 +1,8 @@
 ﻿using Runtime.ConfigurationModule.Services;
 using Runtime.InventoryModule.Model;
-using Runtime.InventoryModule.UI;
 using Runtime.Signal;
 using Runtime.UserModule.Model;
 using System;
-using Tarject.Runtime.Core.Factory;
 using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;

@@ -1,6 +1,6 @@
 {
     "name": "com.tariksavas.tarject",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "displayName": "Tarject",
     "description": "This is a Dependency Injection Framework",
     "unity": "2019.1",

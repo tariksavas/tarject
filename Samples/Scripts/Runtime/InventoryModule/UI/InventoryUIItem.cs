@@ -1,10 +1,11 @@
 ﻿using Runtime.InventoryModule.Model;
+using Tarject.Runtime.Core.Factory;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Runtime.InventoryModule.UI
 {
-    public class InventoryUIItem : MonoBehaviour
+    public class InventoryUIItem : MonoBehaviour, IFactory<InventoryItem>
     {
         [SerializeField]
         private Text _itemNameText;

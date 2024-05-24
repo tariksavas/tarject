@@ -12,31 +12,10 @@ namespace Tarject.Runtime.Core.Context
 
         public string Id;
 
-        private bool _withTriggerableInterfaces;
-
         public BindedObject(Type type, object createdObject)
         {
             Type = type;
             CreatedObject = createdObject;
-        }
-
-        public T GetTriggerableInterface<T>() where T : class
-        {
-            if (!_withTriggerableInterfaces)
-            {
-                return null;
-            }
-
-            return CreatedObject is T t
-                ? t
-                : null;
-        }
-
-        public BindedObject WithTriggerableInterfaces()
-        {
-            _withTriggerableInterfaces = true;
-
-            return this;
         }
 
         public BindedObject ToInterface<T>() where T : class

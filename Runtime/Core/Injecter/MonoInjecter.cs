@@ -1,4 +1,5 @@
-﻿using Tarject.Runtime.Utility;
+﻿using Tarject.Runtime.Core.Context;
+using Tarject.Runtime.Utility;
 using UnityEngine;
 
 namespace Tarject.Runtime.Core.Injecter
@@ -18,7 +19,6 @@ namespace Tarject.Runtime.Core.Injecter
 
             TargetContext ??= gameObject.scene.GetSceneContext();
             this.InjectToFields(TargetContext);
-            this.InjectToMethods(TargetContext);
 
             Injected = true;
         }
