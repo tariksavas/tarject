@@ -1,4 +1,5 @@
-﻿using Tarject.Runtime.Utility;
+﻿using Tarject.Runtime.Core.Context;
+using Tarject.Runtime.Utility;
 using UnityEngine;
 
 namespace Tarject.Runtime.Core.Injecter
@@ -13,13 +14,12 @@ namespace Tarject.Runtime.Core.Injecter
 
         private void FindAndInjectSceneObjects()
         {
-            Context.SceneContext sceneContext = gameObject.scene.GetSceneContext();
+            SceneContext sceneContext = gameObject.scene.GetSceneContext();
 
             MonoBehaviour[] sceneObjects = FindObjectsOfType<MonoBehaviour>(true);
             for (int index = 0; index < sceneObjects.Length; index++)
             {
                 sceneObjects[index].InjectToFields(sceneContext);
-                sceneObjects[index].InjectToMethods(sceneContext);
             }
         }
     }

@@ -10,13 +10,6 @@ namespace Tarject.Runtime.Core.Context
     {
         private readonly OptimizedList<BindedObject> _bindedObjects = new OptimizedList<BindedObject>();
 
-        private readonly Context _context;
-
-        public DIContainer(Context context)
-        {
-            _context = context;
-        }
-
         public BindedObject Bind<T>() where T : class
         {
             Type type = typeof(T);
@@ -70,7 +63,7 @@ namespace Tarject.Runtime.Core.Context
 
             object createdObject = Activator.CreateInstance(type);
 
-            ((T)createdObject).SetContext(_context);
+            ((T)createdObject).SetContext(this.GetContainerContext());
 
             BindedObject bindedObject = new BindedObject(type, createdObject);
 
@@ -104,19 +97,16 @@ namespace Tarject.Runtime.Core.Context
             }
         }
 
-        public OptimizedList<T> GetTriggerableInterfaces<T>() where T : class
+        public OptimizedList<T> GetObjectsOfType<T>() where T : class
         {
             OptimizedList<T> result = new OptimizedList<T>();
 
             for (int index = 0; index < _bindedObjects.Count; index++)
             {
-                T t = _bindedObjects[index].GetTriggerableInterface<T>();
-                if (t == null)
+                if (_bindedObjects[index].CreatedObject is T t)
                 {
-                    continue;
+                    result.Add(t);
                 }
-
-                result.Add(t);
             }
 
             return result;

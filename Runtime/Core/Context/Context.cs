@@ -12,19 +12,19 @@ namespace Tarject.Runtime.Core.Context
         [SerializeField]
         private OptimizedList<GameObjectInstaller> _gameObjectInstallers = new OptimizedList<GameObjectInstaller>();
 
-        private DIContainer _container;
+        private readonly DIContainer _container = new DIContainer();
 
         protected DIContainer Container => _container;
 
-        private OptimizedList<IInitializable> initializables;
-        private OptimizedList<IUpdatable> updatables;
-        private OptimizedList<IFixedUpdatable> fixedUpdatables;
-        private OptimizedList<ILateUpdatable> lateUpdatables;
-        private OptimizedList<IDisposable> disposables;
+        private OptimizedList<IInitializable> _initializables;
+        private OptimizedList<IUpdatable> _updatables;
+        private OptimizedList<IFixedUpdatable> _fixedUpdatables;
+        private OptimizedList<ILateUpdatable> _lateUpdatables;
+        private OptimizedList<IDisposable> _disposables;
 
         protected virtual void Awake()
         {
-            _container = new DIContainer(this);
+            _container.AddContainerContextRegistry(this);
 
             InstallMonoInstallers();
         }
@@ -35,7 +35,7 @@ namespace Tarject.Runtime.Core.Context
 
             GetTriggerableInterfaces();
 
-            initializables.ForEach(x=> x.Initialize());
+            _initializables.ForEach(x => x.Initialize());
         }
 
         public abstract T Resolve<T>(Type type = null, string id = "") where T : class;
@@ -47,7 +47,7 @@ namespace Tarject.Runtime.Core.Context
                 _gameObjectInstallers[index].Install(Container);
             }
         }
-        
+
         private void InjectConstructorsAfterBindings()
         {
             Container.InjectConstructorsAfterBindings(this);
@@ -55,31 +55,31 @@ namespace Tarject.Runtime.Core.Context
 
         private void GetTriggerableInterfaces()
         {
-            initializables = Container.GetTriggerableInterfaces<IInitializable>();
-            updatables = Container.GetTriggerableInterfaces<IUpdatable>();
-            fixedUpdatables = Container.GetTriggerableInterfaces<IFixedUpdatable>();
-            lateUpdatables = Container.GetTriggerableInterfaces<ILateUpdatable>();
-            disposables = Container.GetTriggerableInterfaces<IDisposable>();
+            _initializables = Container.GetObjectsOfType<IInitializable>();
+            _updatables = Container.GetObjectsOfType<IUpdatable>();
+            _fixedUpdatables = Container.GetObjectsOfType<IFixedUpdatable>();
+            _lateUpdatables = Container.GetObjectsOfType<ILateUpdatable>();
+            _disposables = Container.GetObjectsOfType<IDisposable>();
         }
 
         private void Update()
         {
-            updatables.ForEach(x => x.Update());
+            _updatables.ForEach(x => x.Update());
         }
 
         private void FixedUpdate()
         {
-            fixedUpdatables.ForEach(x => x.FixedUpdate());
+            _fixedUpdatables.ForEach(x => x.FixedUpdate());
         }
 
         private void LateUpdate()
         {
-            lateUpdatables.ForEach (x => x.LateUpdate());
+            _lateUpdatables.ForEach(x => x.LateUpdate());
         }
 
         protected virtual void OnDestroy()
         {
-            disposables.ForEach(x => x.Dispose());
+            _disposables.ForEach(x => x.Dispose());
         }
     }
 }

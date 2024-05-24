@@ -17,8 +17,7 @@ namespace Tarject.Runtime.Utility
                 return null;
             }
 
-            ConstructorInfo injectedConstructorInfo = null;
-            ConstructorInfo orderedConstructorInfo = null;
+            ConstructorInfo injectableConstructorInfo = null;
 
             for (int constructorIndex = 0; constructorIndex < constructorInfos.Length; constructorIndex++)
             {
@@ -26,7 +25,7 @@ namespace Tarject.Runtime.Utility
 
                 if (Attribute.IsDefined(constructorInfo, typeof(Inject)))
                 {
-                    injectedConstructorInfo = constructorInfo;
+                    injectableConstructorInfo = constructorInfo;
                     break;
                 }
 
@@ -35,16 +34,14 @@ namespace Tarject.Runtime.Utility
                     continue;
                 }
 
-                if (orderedConstructorInfo == null ||
-                    constructorInfo.GetParameters().Length > orderedConstructorInfo.GetParameters().Length)
+                if (injectableConstructorInfo == null ||
+                    constructorInfo.GetParameters().Length > injectableConstructorInfo.GetParameters().Length)
                 {
-                    orderedConstructorInfo = constructorInfo;
+                    injectableConstructorInfo = constructorInfo;
                 }
             }
 
-            return injectedConstructorInfo != null
-                ? injectedConstructorInfo
-                : orderedConstructorInfo;
+            return injectableConstructorInfo;
         }
 
         public static object[] GetInjectableParameterObjects(this Type type, Context context)
@@ -115,40 +112,6 @@ namespace Tarject.Runtime.Utility
                     Inject injectAttribute = field.GetCustomAttribute<Inject>();
                     field.SetValue(createdObject, context.Resolve<object>(field.FieldType, injectAttribute?.Id));
                 }
-            }
-        }
-
-        public static void InjectToMethods(this object createdObject, Context context)
-        {
-            const string methodName = "Inject";
-
-            Type type = createdObject.GetType();
-            MethodInfo method = type.GetMethod(methodName,
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-
-            if (method == null)
-            {
-                return;
-            }
-
-            if (Attribute.IsDefined(method, typeof(Inject)))
-            {
-                object[] objects = Array.Empty<object>();
-
-                ParameterInfo[] parameters = method.GetParameters();
-                for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
-                {
-                    ParameterInfo parameter = parameters[parameterIndex];
-                    Type parameterType = parameter.ParameterType;
-
-                    Inject injectAttribute = parameter.GetCustomAttribute<Inject>();
-                    object parameterObject = context.Resolve<object>(parameterType, injectAttribute?.Id);
-
-                    Array.Resize(ref objects, objects.Length + 1);
-                    objects[^1] = parameterObject;
-                }
-
-                method.Invoke(createdObject, objects);
             }
         }
     }

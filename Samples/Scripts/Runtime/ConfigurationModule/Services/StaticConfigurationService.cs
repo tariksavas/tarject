@@ -23,7 +23,9 @@ namespace Runtime.ConfigurationModule.Services
         {
             return new InventoryItem[]
             {
-                new InventoryItem(0, 1, "Sword", Color.blue), new InventoryItem(1, 1, "Armor", Color.green), new InventoryItem(2, 5,"Position", Color.red)
+                new InventoryItem(0, 1, "Sword", Color.blue),
+                new InventoryItem(1, 1, "Armor", Color.green),
+                new InventoryItem(2, 5,"Position", Color.red)
             };
         }
     }

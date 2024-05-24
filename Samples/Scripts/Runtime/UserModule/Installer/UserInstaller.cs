@@ -10,7 +10,7 @@ namespace Runtime.UserModule.Installer
         public override void Install(DIContainer container)
         {
             container.Bind<UserData>();
-            container.Bind<UserController>().WithTriggerableInterfaces();
+            container.Bind<UserController>();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Runtime.InventoryModule.Installer
         {
             container.Bind<InventoryData>().WithId("inventory1");
             container.Bind<InventoryData>().WithId("inventory2");
-            container.Bind<InventoryController>().WithTriggerableInterfaces();
+            container.Bind<InventoryController>();
 
             container.BindFactory<GameObjectFactory>();
         }
