@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Runtime.PlayerMovementModule.Controller
 {
-    public class PlayerMovementController : IInitializable, IUpdatable, IDisposable
+    public class PlayerMovementController : IInitializable, IUpdatable
     {
         private readonly InputHandler _inputHandler;
 
@@ -23,11 +23,6 @@ namespace Runtime.PlayerMovementModule.Controller
         public void Update()
         {
             Debug.Log($"[PROOF] - PlayerMovementController --> InputHandler from hierarchy - InputHandling: {_inputHandler.inputHandling}");
-        }
-
-        public void Dispose()
-        {
-
         }
     }
 }

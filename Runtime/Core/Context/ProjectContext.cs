@@ -26,13 +26,6 @@ namespace Tarject.Runtime.Core.Context
             }
 
             base.Awake();
-
-            InstallRegistry();
-        }
-
-        private void InstallRegistry()
-        {
-            Container.Bind<ContextRegistry>();
         }
 
         public override T Resolve<T>(Type type = null, string id = "")

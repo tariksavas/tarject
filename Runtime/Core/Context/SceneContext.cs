@@ -1,14 +1,27 @@
-﻿using Tarject.Runtime.Utility;
+﻿using System;
+using UnityEngine;
 
 namespace Tarject.Runtime.Core.Context
 {
-    public class SceneContext : TempContext
+    [DefaultExecutionOrder(-150)]
+    public class SceneContext : Context
     {
         protected override void Awake()
         {
-            this.AddSceneContextRegistrty();
+            this.AddSceneContextRegistry();
 
             base.Awake();
+        }
+
+        public override T Resolve<T>(Type type = null, string id = "")
+        {
+            T t = Container.Resolve<T>(type, id);
+            if (t != null)
+            {
+                return t;
+            }
+
+            return ProjectContext.Instance.Resolve<T>(type, id);
         }
 
         protected override void OnDestroy()
