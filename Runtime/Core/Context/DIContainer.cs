@@ -10,23 +10,31 @@ namespace Tarject.Runtime.Core.Context
     {
         private readonly OptimizedList<BindedObject> _bindedObjects = new OptimizedList<BindedObject>();
 
+        private DIContainer _parentDIContainer;
+
+        public void SetParentContainer(DIContainer parentDIContainer)
+        {
+            _parentDIContainer = parentDIContainer;
+        }
+
         public BindedObject Bind<T>() where T : class
         {
             Type type = typeof(T);
 
             object createdObject;
+            BindedObject bindedObject;
 
             ConstructorInfo constructorInfo = type.GetInjectableConstructor();
             if (constructorInfo == null)
             {
                 createdObject = Activator.CreateInstance(type);
+                bindedObject = new BindedObject(type, createdObject);
             }
             else
             {
                 createdObject = FormatterServices.GetUninitializedObject(type);
+                bindedObject = new BindedObject(type, createdObject, false);
             }
-
-            BindedObject bindedObject = new BindedObject(type, createdObject);
 
             _bindedObjects.Add(bindedObject);
 
@@ -63,7 +71,7 @@ namespace Tarject.Runtime.Core.Context
 
             object createdObject = Activator.CreateInstance(type);
 
-            ((T)createdObject).SetContext(this.GetContainerContext());
+            ((T)createdObject).SetContainer(this);
 
             BindedObject bindedObject = new BindedObject(type, createdObject);
 
@@ -83,17 +91,22 @@ namespace Tarject.Runtime.Core.Context
             BindedObject bindedObject = _bindedObjects.Find(predicate);
             if (bindedObject == null)
             {
-                return null;
+                return _parentDIContainer?.Resolve<T>(type, id);
             }
 
             return bindedObject.CreatedObject as T;
         }
 
-        public void InjectConstructorsAfterBindings(Context context)
+        public void InjectConstructorsAfterBindings()
         {
             for (int index = 0; index < _bindedObjects.Count; index++)
             {
-                _bindedObjects[index].CreatedObject.InjectToConstructor(context);
+                if (_bindedObjects[index].Initialized)
+                {
+                    continue;
+                }
+
+                _bindedObjects[index].CreatedObject.InjectToConstructor(this);
             }
         }
 

@@ -11,7 +11,7 @@ namespace Tarject.Runtime.Core.Factory
         {
             TFactory createdObject = Object.Instantiate(prefab);
 
-            createdObject.InjectToFields(_context);
+            createdObject.InjectToFields(_container);
 
             if (createdObject.TryGetComponent(out MonoInjecter monoInjecter))
             {
@@ -71,7 +71,7 @@ namespace Tarject.Runtime.Core.Factory
         {
             TFactory createdObject = Object.Instantiate(prefab, parent);
 
-            createdObject.InjectToFields(_context);
+            createdObject.InjectToFields(_container);
 
             if (createdObject.TryGetComponent(out MonoInjecter monoInjecter))
             {

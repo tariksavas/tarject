@@ -1,5 +1,4 @@
-﻿using System;
-using Tarject.Runtime.Core.Installer;
+﻿using Tarject.Runtime.Core.Installer;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.StructuralDefinitions;
 using UnityEngine;
@@ -14,7 +13,7 @@ namespace Tarject.Runtime.Core.Context
 
         private readonly DIContainer _container = new DIContainer();
 
-        protected DIContainer Container => _container;
+        internal DIContainer Container => _container;
 
         private OptimizedList<IInitializable> _initializables;
         private OptimizedList<IUpdatable> _updatables;
@@ -24,21 +23,18 @@ namespace Tarject.Runtime.Core.Context
 
         protected virtual void Awake()
         {
-            _container.AddContainerContextRegistry(this);
+            SetParentContainer();
 
             InstallMonoInstallers();
-        }
 
-        private void Start()
-        {
-            InjectConstructorsAfterBindings();
+            Container.InjectConstructorsAfterBindings();
 
             GetTriggerableInterfaces();
 
             _initializables.ForEach(x => x.Initialize());
         }
 
-        public abstract T Resolve<T>(Type type = null, string id = "") where T : class;
+        protected abstract void SetParentContainer();
 
         private void InstallMonoInstallers()
         {
@@ -46,11 +42,6 @@ namespace Tarject.Runtime.Core.Context
             {
                 _gameObjectInstallers[index].Install(Container);
             }
-        }
-
-        private void InjectConstructorsAfterBindings()
-        {
-            Container.InjectConstructorsAfterBindings(this);
         }
 
         private void GetTriggerableInterfaces()

@@ -34,5 +34,18 @@ namespace Tarject.Runtime.SignalBus.Controller
                 }
             }
         }
+
+        public bool Exists<T>(Action<T> action)
+        {
+            for (int index = 0; index < _subscribers.Count; index++)
+            {
+                if (_subscribers[index].Delegate.Equals(action))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

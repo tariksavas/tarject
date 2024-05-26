@@ -9,11 +9,8 @@ namespace Runtime.InventoryModule.UI
 {
     public class InventoryPanel : MonoInjecter
     {
-        [Inject("inventory1")]
-        private readonly InventoryData _inventoryData1;
-        
-        [Inject("inventory2")]
-        private readonly InventoryData _inventoryData2;
+        [Inject("userInventory")]
+        private readonly InventoryData _inventoryData;
         
         [Inject]
         private readonly SignalController _signalController;
@@ -41,17 +38,13 @@ namespace Runtime.InventoryModule.UI
 
         private void OnUserInventoryFetched(UserInventoryFetchedSignal _)
         {
-            //Send param id for debug
-            InitializePanel(_inventoryData1, "inventory1");
-
-            InitializePanel(_inventoryData2, "inventory2");
+            InitializePanel(_inventoryData);
         }
 
-        private void InitializePanel(InventoryData inventoryData, string id)
+        private void InitializePanel(InventoryData inventoryData)
         {
             if (inventoryData.items == null || inventoryData.items.Count == 0)
             {
-                Debug.Log($"[PROOF] - InventoryPanel --> [{id}] items empty!");
                 return;
             }
 

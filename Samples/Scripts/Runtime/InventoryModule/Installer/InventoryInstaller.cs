@@ -10,8 +10,7 @@ namespace Runtime.InventoryModule.Installer
     {
         public override void Install(DIContainer container)
         {
-            container.Bind<InventoryData>().WithId("inventory1");
-            container.Bind<InventoryData>().WithId("inventory2");
+            container.Bind<InventoryData>().WithId("userInventory");
             container.Bind<InventoryController>();
 
             container.BindFactory<GameObjectFactory>();

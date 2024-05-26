@@ -44,7 +44,7 @@ namespace Tarject.Runtime.Utility
             return injectableConstructorInfo;
         }
 
-        public static object[] GetInjectableParameterObjects(this Type type, Context context)
+        public static object[] GetInjectableParameterObjects(this Type type, DIContainer container)
         {
             object[] objects = Array.Empty<object>();
 
@@ -61,7 +61,7 @@ namespace Tarject.Runtime.Utility
                 Type parameterType = parameter.ParameterType;
 
                 Inject injectAttribute = parameter.GetCustomAttribute<Inject>();
-                object parameterObject = context.Resolve<object>(parameterType, injectAttribute?.Id);
+                object parameterObject = container.Resolve<object>(parameterType, injectAttribute?.Id);
 
                 Array.Resize(ref objects, objects.Length + 1);
                 objects[^1] = parameterObject;
@@ -70,7 +70,7 @@ namespace Tarject.Runtime.Utility
             return objects;
         }
 
-        public static void InjectToConstructor(this object createdObject, Context context)
+        public static void InjectToConstructor(this object createdObject, DIContainer container)
         {
             Type type = createdObject.GetType();
             ConstructorInfo constructorInfo = type.GetInjectableConstructor();
@@ -88,7 +88,7 @@ namespace Tarject.Runtime.Utility
                 Type parameterType = parameter.ParameterType;
 
                 Inject injectAttribute = parameter.GetCustomAttribute<Inject>();
-                object parameterObject = context.Resolve<object>(parameterType, injectAttribute?.Id);
+                object parameterObject = container.Resolve<object>(parameterType, injectAttribute?.Id);
 
                 Array.Resize(ref objects, objects.Length + 1);
                 objects[^1] = parameterObject;
@@ -97,7 +97,7 @@ namespace Tarject.Runtime.Utility
             constructorInfo.Invoke(createdObject, objects);
         }
 
-        public static void InjectToFields(this object createdObject, Context context)
+        public static void InjectToFields(this object createdObject, DIContainer container)
         {
             Type type = createdObject.GetType();
             FieldInfo[] fields = type.GetFields(
@@ -110,7 +110,7 @@ namespace Tarject.Runtime.Utility
                 if (Attribute.IsDefined(field, typeof(Inject)))
                 {
                     Inject injectAttribute = field.GetCustomAttribute<Inject>();
-                    field.SetValue(createdObject, context.Resolve<object>(field.FieldType, injectAttribute?.Id));
+                    field.SetValue(createdObject, container.Resolve<object>(field.FieldType, injectAttribute?.Id));
                 }
             }
         }

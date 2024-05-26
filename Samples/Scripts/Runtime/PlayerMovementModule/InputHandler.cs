@@ -8,13 +8,5 @@ namespace Runtime.PlayerMovementModule
         //This object should be on Scene
 
         public bool inputHandling = true;
-
-        private void Update()
-        {
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                inputHandling = !inputHandling;
-            }
-        }
     }
 }

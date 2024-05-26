@@ -1,13 +1,11 @@
 ﻿using Runtime.ConfigurationModule.Services;
 using Runtime.InventoryModule.Model;
 using Runtime.Signal;
-using Runtime.UserModule.Model;
 using System;
 using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;
 using Tarject.Runtime.StructuralDefinitions;
-using UnityEngine;
 using IDisposable = Tarject.Runtime.Core.Interfaces.IDisposable;
 
 namespace Runtime.InventoryModule.Controller
@@ -16,20 +14,14 @@ namespace Runtime.InventoryModule.Controller
     {
         private readonly SignalController _signalController;
 
-        private readonly UserData _userData;
-
-        private readonly InventoryData _inventoryData1;
-        private readonly InventoryData _inventoryData2;
+        private readonly InventoryData _inventoryData;
 
         private readonly IConfigurationService _configurationService;
 
-        public InventoryController(SignalController signalController, UserData userData, [Inject("inventory1")] InventoryData inventoryData1,
-            [Inject("inventory2")] InventoryData inventoryData2, IConfigurationService configurationService)
+        public InventoryController(SignalController signalController, [Inject("userInventory")] InventoryData inventoryData, IConfigurationService configurationService)
         {
             _signalController = signalController;
-            _userData = userData;
-            _inventoryData1 = inventoryData1;
-            _inventoryData2 = inventoryData2;
+            _inventoryData = inventoryData;
             _configurationService = configurationService;
         }
 
@@ -43,21 +35,18 @@ namespace Runtime.InventoryModule.Controller
             _signalController.Subscribe<UserDataReceivedSignal>(OnUserDataReceived);
         }
 
-        private void OnUserDataReceived(UserDataReceivedSignal _)
+        private void OnUserDataReceived(UserDataReceivedSignal signal)
         {
-            InitializeUserInventory();
+            InitializeUserInventory(signal.UserId);
         }
 
-        private void InitializeUserInventory()
+        private void InitializeUserInventory(string userId)
         {
-            InventoryItem[] inventoryData = GetUserInventory(_userData.userId);
+            InventoryItem[] inventoryData = GetUserInventory(userId);
 
-            _inventoryData1.items = new OptimizedList<InventoryItem>(inventoryData);
-            _inventoryData2.items = new OptimizedList<InventoryItem>();
+            _inventoryData.items = new OptimizedList<InventoryItem>(inventoryData);
 
-            Debug.Log($"[PROOF] - InventoryController --> InventoryData with Id: [inventory1] must be contain data but Id: [inventory2] must be empty!");
-
-            _signalController.Fire(new UserInventoryFetchedSignal());
+            _signalController.Fire(new UserInventoryFetchedSignal(_inventoryData));
         }
 
         private InventoryItem[] GetUserInventory(string userId)

@@ -5,7 +5,7 @@ using Tarject.Runtime.Core.Installer;
 
 namespace Runtime.Installers
 {
-    internal class SampleSceneInstaller : GameObjectInstaller
+    internal class TarjectDemoSceneInstaller : GameObjectInstaller
     {
         public override void Install(DIContainer container)
         {
