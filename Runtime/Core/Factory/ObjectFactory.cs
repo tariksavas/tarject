@@ -10,7 +10,7 @@ namespace Tarject.Runtime.Core.Factory
         {
             Type type = typeof(TFactory);
 
-            object[] injectableParameterObjects = type.GetInjectableParameterObjects(_context);
+            object[] injectableParameterObjects = type.GetInjectableParameterObjects(_container);
 
             return (TFactory)Activator.CreateInstance(type, injectableParameterObjects);
         }

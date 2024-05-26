@@ -8,14 +8,17 @@ namespace Tarject.Runtime.Core.Context
 
         public readonly Type Type;
 
-        public Type InterfaceType;
+        public readonly bool Initialized;
 
-        public string Id;
+        public Type InterfaceType { get; private set; }
 
-        public BindedObject(Type type, object createdObject)
+        public string Id { get; private set; }
+
+        public BindedObject(Type type, object createdObject, bool initialized = true)
         {
             Type = type;
             CreatedObject = createdObject;
+            Initialized = initialized;
         }
 
         public BindedObject ToInterface<T>() where T : class

@@ -1,12 +1,14 @@
-﻿namespace Tarject.Runtime.Core.Factory
+﻿using Tarject.Runtime.Core.Context;
+
+namespace Tarject.Runtime.Core.Factory
 {
     public class Factory
     {
-        protected Context.Context _context;
+        protected DIContainer _container;
 
-        public void SetContext(Context.Context context)
+        public void SetContainer(DIContainer container)
         {
-            _context = context;
+            _container = container;
         }
     }
 }

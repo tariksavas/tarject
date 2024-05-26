@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Tarject.Runtime.Core.Context
 {
@@ -28,9 +27,9 @@ namespace Tarject.Runtime.Core.Context
             base.Awake();
         }
 
-        public override T Resolve<T>(Type type = null, string id = "")
+        protected override void SetParentContainer()
         {
-            return Container.Resolve<T>(type, id);
+            Container.SetParentContainer(null);
         }
     }
 }

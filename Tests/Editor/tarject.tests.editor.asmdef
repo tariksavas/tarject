@@ -1,0 +1,21 @@
+{
+    "name": "tarject.tests.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:a3bfbce2c0633954ca981cb73b4f2aa7",
+        "GUID:361dc9d1495baee4bb6d8c28df016717"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

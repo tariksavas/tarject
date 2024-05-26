@@ -8,7 +8,7 @@ namespace Tarject.Runtime.Core.Injecter
     {
         public bool Injected { get; set; }
 
-        protected Context.Context TargetContext { private get; set; }
+        protected DIContainer TargetContainer { private get; set; }
 
         protected virtual void Awake()
         {
@@ -17,8 +17,8 @@ namespace Tarject.Runtime.Core.Injecter
                 return;
             }
 
-            TargetContext ??= gameObject.scene.GetSceneContext();
-            this.InjectToFields(TargetContext);
+            TargetContainer ??= gameObject.scene.GetSceneContainer();
+            this.InjectToFields(TargetContainer);
 
             Injected = true;
         }

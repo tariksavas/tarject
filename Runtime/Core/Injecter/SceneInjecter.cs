@@ -14,12 +14,12 @@ namespace Tarject.Runtime.Core.Injecter
 
         private void FindAndInjectSceneObjects()
         {
-            SceneContext sceneContext = gameObject.scene.GetSceneContext();
+            DIContainer container = gameObject.scene.GetSceneContainer();
 
             MonoBehaviour[] sceneObjects = FindObjectsOfType<MonoBehaviour>(true);
             for (int index = 0; index < sceneObjects.Length; index++)
             {
-                sceneObjects[index].InjectToFields(sceneContext);
+                sceneObjects[index].InjectToFields(container);
             }
         }
     }

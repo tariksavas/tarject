@@ -11,7 +11,7 @@ namespace Runtime.InventoryModule.UI
         private Text _itemNameText;
         [SerializeField]
         private Text _itemCountText;
-        
+
         [SerializeField]
         private Image _itemImage;
 
