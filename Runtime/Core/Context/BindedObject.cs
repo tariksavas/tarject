@@ -4,21 +4,26 @@ namespace Tarject.Runtime.Core.Context
 {
     public class BindedObject
     {
-        public readonly object CreatedObject;
-
         public readonly Type Type;
 
-        public readonly bool Initialized;
+        public object CreatedObject { get; set; }
 
         public Type InterfaceType { get; private set; }
 
         public string Id { get; private set; }
 
-        public BindedObject(Type type, object createdObject, bool initialized = true)
+        public bool IsLazy { get; private set; }
+
+        public BindedObject(Type type, object createdObject = null)
         {
             Type = type;
             CreatedObject = createdObject;
-            Initialized = initialized;
+        }
+
+        public BindedObject Lazy()
+        {
+            IsLazy = true;
+            return this;
         }
 
         public BindedObject ToInterface<T>() where T : class

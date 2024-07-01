@@ -6,10 +6,10 @@ namespace Tarject.Runtime.Core.Factory
 {
     public class GameObjectFactory : Factory
     {
-        public TFactory Create<TFactory>(TFactory prefab)
-            where TFactory : Component, IFactory
+        public TFactorable Create<TFactorable>(TFactorable prefab)
+            where TFactorable : Component, IFactorable
         {
-            TFactory createdObject = Object.Instantiate(prefab);
+            TFactorable createdObject = Object.Instantiate(prefab);
 
             createdObject.InjectToFields(_container);
 
@@ -21,55 +21,55 @@ namespace Tarject.Runtime.Core.Factory
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1>(TFactory prefab, TParam1 param1)
-            where TFactory : Component, IFactory<TParam1>
+        public TFactorable Create<TFactorable, TParam1>(TFactorable prefab, TParam1 param1)
+            where TFactorable : Component, IFactorable<TParam1>
         {
-            TFactory createdObject = Create(prefab);
+            TFactorable createdObject = Create(prefab);
             createdObject.InitializeFactory(param1);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2>(TFactory prefab, TParam1 param1, TParam2 param2)
-            where TFactory : Component, IFactory<TParam1, TParam2>
+        public TFactorable Create<TFactorable, TParam1, TParam2>(TFactorable prefab, TParam1 param1, TParam2 param2)
+            where TFactorable : Component, IFactorable<TParam1, TParam2>
         {
-            TFactory createdObject = Create(prefab);
+            TFactorable createdObject = Create(prefab);
             createdObject.InitializeFactory(param1, param2);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2, TParam3>(TFactory prefab, TParam1 param1, TParam2 param2, TParam3 param3)
-            where TFactory : Component, IFactory<TParam1, TParam2, TParam3>
+        public TFactorable Create<TFactorable, TParam1, TParam2, TParam3>(TFactorable prefab, TParam1 param1, TParam2 param2, TParam3 param3)
+            where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3>
         {
-            TFactory createdObject = Create(prefab);
+            TFactorable createdObject = Create(prefab);
             createdObject.InitializeFactory(param1, param2, param3);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2, TParam3, TParam4>(TFactory prefab, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
-            where TFactory : Component, IFactory<TParam1, TParam2, TParam3, TParam4>
+        public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4>(TFactorable prefab, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
+            where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4>
         {
-            TFactory createdObject = Create(prefab);
+            TFactorable createdObject = Create(prefab);
             createdObject.InitializeFactory(param1, param2, param3, param4);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2, TParam3, TParam4, TParam5>(TFactory prefab, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5)
-            where TFactory : Component, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5>
+        public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4, TParam5>(TFactorable prefab, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5)
+            where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4, TParam5>
         {
-            TFactory createdObject = Create(prefab);
+            TFactorable createdObject = Create(prefab);
             createdObject.InitializeFactory(param1, param2, param3, param4, param5);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory>(TFactory prefab, Transform parent)
-            where TFactory : Component, IFactory
+        public TFactorable Create<TFactorable>(TFactorable prefab, Transform parent)
+            where TFactorable : Component, IFactorable
         {
-            TFactory createdObject = Object.Instantiate(prefab, parent);
+            TFactorable createdObject = Object.Instantiate(prefab, parent);
 
             createdObject.InjectToFields(_container);
 
@@ -81,46 +81,46 @@ namespace Tarject.Runtime.Core.Factory
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1>(TFactory prefab, Transform parent, TParam1 param1) 
-            where TFactory : Component, IFactory<TParam1>
+        public TFactorable Create<TFactorable, TParam1>(TFactorable prefab, Transform parent, TParam1 param1) 
+            where TFactorable : Component, IFactorable<TParam1>
         {
-            TFactory createdObject = Create(prefab, parent);
+            TFactorable createdObject = Create(prefab, parent);
             createdObject.InitializeFactory(param1);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2>(TFactory prefab, Transform parent, TParam1 param1, TParam2 param2)
-            where TFactory : Component, IFactory<TParam1, TParam2>
+        public TFactorable Create<TFactorable, TParam1, TParam2>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2)
+            where TFactorable : Component, IFactorable<TParam1, TParam2>
         {
-            TFactory createdObject = Create(prefab, parent);
+            TFactorable createdObject = Create(prefab, parent);
             createdObject.InitializeFactory(param1, param2);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2, TParam3>(TFactory prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3)
-            where TFactory : Component, IFactory<TParam1, TParam2, TParam3>
+        public TFactorable Create<TFactorable, TParam1, TParam2, TParam3>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3)
+            where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3>
         {
-            TFactory createdObject = Create(prefab, parent);
+            TFactorable createdObject = Create(prefab, parent);
             createdObject.InitializeFactory(param1, param2, param3);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2, TParam3, TParam4>(TFactory prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
-            where TFactory : Component, IFactory<TParam1, TParam2, TParam3, TParam4>
+        public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
+            where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4>
         {
-            TFactory createdObject = Create(prefab, parent);
+            TFactorable createdObject = Create(prefab, parent);
             createdObject.InitializeFactory(param1, param2, param3, param4);
 
             return createdObject;
         }
 
-        public TFactory Create<TFactory, TParam1, TParam2, TParam3, TParam4, TParam5>(TFactory prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5)
-            where TFactory : Component, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5>
+        public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4, TParam5>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5)
+            where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4, TParam5>
         {
-            TFactory createdObject = Create(prefab, parent);
+            TFactorable createdObject = Create(prefab, parent);
             createdObject.InitializeFactory(param1, param2, param3, param4, param5);
 
             return createdObject;

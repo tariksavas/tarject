@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Runtime.InventoryModule.UI
 {
-    public class InventoryUIItem : MonoBehaviour, IFactory<InventoryItem>
+    public class InventoryUIItem : MonoBehaviour, IFactorable<InventoryItem>
     {
         [SerializeField]
         private Text _itemNameText;

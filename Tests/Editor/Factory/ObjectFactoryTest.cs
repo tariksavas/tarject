@@ -51,11 +51,11 @@ namespace Tarject.Tests.Editor.Factory
             Assert.IsNotNull(factoryTestClass.ObjectFactory);
         }
 
-        private class FactoryTestClass : IFactory
+        private class FactoryTestClass : IFactorable
         {
         }
 
-        private class FactorySingleParamTestClass : IFactory<string>
+        private class FactorySingleParamTestClass : IFactorable<string>
         {
             public string Param {  get; private set; }
 
@@ -65,7 +65,7 @@ namespace Tarject.Tests.Editor.Factory
             }
         }
 
-        private class FactoryMultipleParamTestClass : IFactory<int, string>
+        private class FactoryMultipleParamTestClass : IFactorable<int, string>
         {
             public int Id { get; private set; }
 
@@ -78,7 +78,7 @@ namespace Tarject.Tests.Editor.Factory
             }
         }
 
-        private class FactoryInjectionTestClass : IFactory
+        private class FactoryInjectionTestClass : IFactorable
         {
             public readonly ObjectFactory ObjectFactory;
 

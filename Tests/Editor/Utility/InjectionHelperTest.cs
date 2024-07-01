@@ -20,7 +20,7 @@ namespace Tarject.Tests.Editor.Utility
         public void Get_Injectable_Constructor()
         {
             Type type = typeof(SingleInjectConstructorTestClass);
-            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
+            ConstructorInfo constructorInfo = type.GetCachedInjectableConstructor();
 
             Assert.IsNotNull(constructorInfo);
             Assert.IsTrue(constructorInfo.GetParameters().Length > 0);
@@ -30,7 +30,7 @@ namespace Tarject.Tests.Editor.Utility
         public void Get_Injectable_Constructor_With_Attribute()
         {
             Type type = typeof(MultipleInjectConstructorWithAttributeTestClass);
-            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
+            ConstructorInfo constructorInfo = type.GetCachedInjectableConstructor();
 
             Assert.IsNotNull(constructorInfo);
             Assert.IsTrue(constructorInfo.GetParameters().Length == 1);
@@ -40,7 +40,7 @@ namespace Tarject.Tests.Editor.Utility
         public void Get_More_Injectable_Constructor()
         {
             Type type = typeof(MultipleInjectConstructorTestClass);
-            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
+            ConstructorInfo constructorInfo = type.GetCachedInjectableConstructor();
 
             Assert.IsNotNull(constructorInfo);
             Assert.IsTrue(constructorInfo.GetParameters().Length == 2);
@@ -50,8 +50,7 @@ namespace Tarject.Tests.Editor.Utility
         public void Get_Injectable_Parameter_Objects()
         {
             Type type = typeof(SingleInjectConstructorTestClass);
-            object[] objects= type.GetInjectableParameterObjects(Container);
-
+            Assert.IsTrue(type.TryGetDependencies(out object[] objects, Container));
             Assert.IsNotNull(objects);
             Assert.IsTrue(objects.Length > 0);
             Assert.IsNotNull(objects[0]);

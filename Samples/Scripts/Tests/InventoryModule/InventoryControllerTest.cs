@@ -23,6 +23,7 @@ namespace Tarject.Samples.Scripts.Tests.InventoryModule
         public void Fetch_User_Inventory()
         {
             InventoryController inventoryController = Container.Resolve<InventoryController>();
+
             SignalController signalController = Container.Resolve<SignalController>();
             IConfigurationService configurationService = Container.Resolve<IConfigurationService>();
 

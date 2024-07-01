@@ -1,5 +1,4 @@
 ﻿using System;
-using Tarject.Runtime.SignalBus.Model;
 using Tarject.Runtime.StructuralDefinitions;
 
 namespace Tarject.Runtime.SignalBus.Controller
@@ -46,6 +45,18 @@ namespace Tarject.Runtime.SignalBus.Controller
             }
 
             return false;
+        }
+
+        private struct Subscriber
+        {
+            public Delegate Delegate;
+            public Type Type;
+
+            public Subscriber(Delegate @delegate, Type type)
+            {
+                Delegate = @delegate;
+                Type = type;
+            }
         }
     }
 }

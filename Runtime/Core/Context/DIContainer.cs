@@ -1,8 +1,6 @@
 ﻿using Tarject.Runtime.StructuralDefinitions;
 using System;
 using Tarject.Runtime.Utility;
-using System.Runtime.Serialization;
-using System.Reflection;
 
 namespace Tarject.Runtime.Core.Context
 {
@@ -21,21 +19,7 @@ namespace Tarject.Runtime.Core.Context
         {
             Type type = typeof(T);
 
-            object createdObject;
-            BindedObject bindedObject;
-
-            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
-            if (constructorInfo == null)
-            {
-                createdObject = Activator.CreateInstance(type);
-                bindedObject = new BindedObject(type, createdObject);
-            }
-            else
-            {
-                createdObject = FormatterServices.GetUninitializedObject(type);
-                bindedObject = new BindedObject(type, createdObject, false);
-            }
-
+            BindedObject bindedObject = new BindedObject(type);
             _bindedObjects.Add(bindedObject);
 
             return bindedObject;
@@ -46,7 +30,6 @@ namespace Tarject.Runtime.Core.Context
             Type type = typeof(T);
 
             BindedObject bindedObject = new BindedObject(type, instance);
-
             _bindedObjects.Add(bindedObject);
 
             return bindedObject;
@@ -59,7 +42,6 @@ namespace Tarject.Runtime.Core.Context
             object instance = UnityEngine.Object.FindAnyObjectByType<T>();
 
             BindedObject bindedObject = new BindedObject(type, instance);
-
             _bindedObjects.Add(bindedObject);
 
             return bindedObject;
@@ -74,10 +56,23 @@ namespace Tarject.Runtime.Core.Context
             ((T)createdObject).SetContainer(this);
 
             BindedObject bindedObject = new BindedObject(type, createdObject);
-
             _bindedObjects.Add(bindedObject);
 
             return bindedObject;
+        }
+
+        public void CompleteBindings()
+        {
+            for (int index = 0; index < _bindedObjects.Count; index++)
+            {
+                BindedObject bindedObject = _bindedObjects[index];
+                if (bindedObject == null || bindedObject.IsLazy)
+                {
+                    continue;
+                }
+
+                TryCreateBindedObject(bindedObject);
+            }
         }
 
         public T Resolve<T>(Type type = null, string id = "") where T : class
@@ -94,20 +89,21 @@ namespace Tarject.Runtime.Core.Context
                 return _parentDIContainer?.Resolve<T>(type, id);
             }
 
+            TryCreateBindedObject(bindedObject);
+
             return bindedObject.CreatedObject as T;
         }
 
-        public void InjectConstructorsAfterBindings()
+        private void TryCreateBindedObject(BindedObject bindedObject)
         {
-            for (int index = 0; index < _bindedObjects.Count; index++)
+            if (bindedObject.CreatedObject != null || !bindedObject.Type.TryGetDependencies(out object[] objects, this))
             {
-                if (_bindedObjects[index].Initialized)
-                {
-                    continue;
-                }
-
-                _bindedObjects[index].CreatedObject.InjectToConstructor(this);
+                return;
             }
+
+            bindedObject.CreatedObject = objects.Length > 0
+                ? Activator.CreateInstance(bindedObject.Type, objects)
+                : Activator.CreateInstance(bindedObject.Type);
         }
 
         public OptimizedList<T> GetObjectsOfType<T>() where T : class
