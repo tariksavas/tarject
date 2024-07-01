@@ -2,7 +2,6 @@
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.StructuralDefinitions;
 using UnityEngine;
-using IDisposable = Tarject.Runtime.Core.Interfaces.IDisposable;
 
 namespace Tarject.Runtime.Core.Context
 {
@@ -19,7 +18,7 @@ namespace Tarject.Runtime.Core.Context
         private OptimizedList<IUpdatable> _updatables;
         private OptimizedList<IFixedUpdatable> _fixedUpdatables;
         private OptimizedList<ILateUpdatable> _lateUpdatables;
-        private OptimizedList<IDisposable> _disposables;
+        private OptimizedList<ILateDisposable> _lateDisposables;
 
         protected virtual void Awake()
         {
@@ -27,7 +26,7 @@ namespace Tarject.Runtime.Core.Context
 
             InstallMonoInstallers();
 
-            Container.InjectConstructorsAfterBindings();
+            CompleteBindings();
 
             GetTriggerableInterfaces();
 
@@ -44,13 +43,18 @@ namespace Tarject.Runtime.Core.Context
             }
         }
 
+        private void CompleteBindings()
+        {
+            _container.CompleteBindings();
+        }
+
         private void GetTriggerableInterfaces()
         {
             _initializables = Container.GetObjectsOfType<IInitializable>();
             _updatables = Container.GetObjectsOfType<IUpdatable>();
             _fixedUpdatables = Container.GetObjectsOfType<IFixedUpdatable>();
             _lateUpdatables = Container.GetObjectsOfType<ILateUpdatable>();
-            _disposables = Container.GetObjectsOfType<IDisposable>();
+            _lateDisposables = Container.GetObjectsOfType<ILateDisposable>();
         }
 
         private void Update()
@@ -70,7 +74,7 @@ namespace Tarject.Runtime.Core.Context
 
         protected virtual void OnDestroy()
         {
-            _disposables.ForEach(x => x.Dispose());
+            _lateDisposables.ForEach(x => x.LateDispose());
         }
     }
 }

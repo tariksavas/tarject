@@ -6,11 +6,10 @@ using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;
 using Tarject.Runtime.StructuralDefinitions;
-using IDisposable = Tarject.Runtime.Core.Interfaces.IDisposable;
 
 namespace Runtime.InventoryModule.Controller
 {
-    public class InventoryController : IInitializable, IDisposable
+    public class InventoryController : IInitializable, ILateDisposable
     {
         private readonly SignalController _signalController;
 
@@ -64,7 +63,7 @@ namespace Runtime.InventoryModule.Controller
             _signalController.Unsubscribe<UserDataReceivedSignal>(OnUserDataReceived);
         }
 
-        public void Dispose()
+        public void LateDispose()
         {
             UnsubscribeEvents();
         }

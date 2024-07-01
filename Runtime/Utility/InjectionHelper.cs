@@ -2,114 +2,56 @@ using System;
 using System.Reflection;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Injecter;
+using UnityEngine;
 
 namespace Tarject.Runtime.Utility
 {
     public static class InjectionHelper
     {
-        public static ConstructorInfo GetInjectableConstructor(this Type type)
+        public static bool TryGetDependencies(this Type type, out object[] objects, DIContainer container)
         {
-            ConstructorInfo[] constructorInfos = type.GetConstructors(
-               BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            objects = Array.Empty<object>();
 
-            if (constructorInfos == null || constructorInfos.Length == 0)
-            {
-                return null;
-            }
-
-            ConstructorInfo injectableConstructorInfo = null;
-
-            for (int constructorIndex = 0; constructorIndex < constructorInfos.Length; constructorIndex++)
-            {
-                ConstructorInfo constructorInfo = constructorInfos[constructorIndex];
-
-                if (Attribute.IsDefined(constructorInfo, typeof(Inject)))
-                {
-                    injectableConstructorInfo = constructorInfo;
-                    break;
-                }
-
-                if (!constructorInfo.IsPublic || constructorInfo.GetParameters().Length == 0)
-                {
-                    continue;
-                }
-
-                if (injectableConstructorInfo == null ||
-                    constructorInfo.GetParameters().Length > injectableConstructorInfo.GetParameters().Length)
-                {
-                    injectableConstructorInfo = constructorInfo;
-                }
-            }
-
-            return injectableConstructorInfo;
-        }
-
-        public static object[] GetInjectableParameterObjects(this Type type, DIContainer container)
-        {
-            object[] objects = Array.Empty<object>();
-
-            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
+            ConstructorInfo constructorInfo = type.GetCachedInjectableConstructor();
             if (constructorInfo == null)
             {
-                return objects;
+                return true;
             }
 
-            ParameterInfo[] parameters = constructorInfo.GetParameters();
+            ParameterInfo[] parameters = constructorInfo.GetCachedParameters();
+
             for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
             {
                 ParameterInfo parameter = parameters[parameterIndex];
                 Type parameterType = parameter.ParameterType;
 
-                Inject injectAttribute = parameter.GetCustomAttribute<Inject>();
+                InjectAttribute injectAttribute = parameter.GetCustomAttribute<InjectAttribute>();
+                
                 object parameterObject = container.Resolve<object>(parameterType, injectAttribute?.Id);
+                if (parameterObject == null)
+                {
+                    Debug.LogError($"Can not resolve depenceny! Type: {type} --- DependencyType: {parameterType}");
+                    return false;
+                }
 
                 Array.Resize(ref objects, objects.Length + 1);
                 objects[^1] = parameterObject;
             }
 
-            return objects;
-        }
-
-        public static void InjectToConstructor(this object createdObject, DIContainer container)
-        {
-            Type type = createdObject.GetType();
-            ConstructorInfo constructorInfo = type.GetInjectableConstructor();
-            if (constructorInfo == null)
-            {
-                return;
-            }
-
-            object[] objects = Array.Empty<object>();
-
-            ParameterInfo[] parameters = constructorInfo.GetParameters();
-            for (int parameterIndex = 0; parameterIndex < parameters.Length; parameterIndex++)
-            {
-                ParameterInfo parameter = parameters[parameterIndex];
-                Type parameterType = parameter.ParameterType;
-
-                Inject injectAttribute = parameter.GetCustomAttribute<Inject>();
-                object parameterObject = container.Resolve<object>(parameterType, injectAttribute?.Id);
-
-                Array.Resize(ref objects, objects.Length + 1);
-                objects[^1] = parameterObject;
-            }
-
-            constructorInfo.Invoke(createdObject, objects);
+            return true;
         }
 
         public static void InjectToFields(this object createdObject, DIContainer container)
         {
-            Type type = createdObject.GetType();
-            FieldInfo[] fields = type.GetFields(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+            FieldInfo[] fields = createdObject.GetCachedType().GetCachedFields();
 
             for (int fieldIndex = 0; fieldIndex < fields.Length; fieldIndex++)
             {
                 FieldInfo field = fields[fieldIndex];
 
-                if (Attribute.IsDefined(field, typeof(Inject)))
+                if (Attribute.IsDefined(field, typeof(InjectAttribute)))
                 {
-                    Inject injectAttribute = field.GetCustomAttribute<Inject>();
+                    InjectAttribute injectAttribute = field.GetCustomAttribute<InjectAttribute>();
                     field.SetValue(createdObject, container.Resolve<object>(field.FieldType, injectAttribute?.Id));
                 }
             }
