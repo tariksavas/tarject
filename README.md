@@ -10,6 +10,7 @@
 - [Factory](#factory)
 - [Interfaces](#interfaces)
 - [SignalBus](#signalbus)
+- [TestFramework](#testframework)
 
 ## Introduction
 Tarject is a framework developed for Unity Engine to prevent tight coupling between software modules.
@@ -60,10 +61,27 @@ public class AppInstaller : GameObjectInstaller
      {
          FooInstaller.CreateAndInstall(container);
      }
- }
+}
+
+public class FooInstaller : ObjectInstaller<FooInstaller>
+{
+    public override void Install(DIContainer container)
+    {
+        container.Bind<Foo>().WithId("foo1");
+        container.Bind<FooController>();
+    }
+}
 ```
 ```csharp
-public class FooInstaller : ObjectInstaller<FooInstaller>
+public class AppInstaller : GameObjectInstaller
+{
+     public override void Install(DIContainer container)
+     {
+         ObjectInstaller.CreateAndInstall<FooInstaller>(container);
+     }
+}
+
+public class FooInstaller : ObjectInstaller
 {
     public override void Install(DIContainer container)
     {
@@ -91,4 +109,12 @@ container.BindFromHierarchy<Foo>();
 container.BindFactory<GameObjectFactory>();
 ```
 
+## Injecter
+
+## Factory
+
+## Interfaces
+
 ## SignalBus
+
+## TestFramework
