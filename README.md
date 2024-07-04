@@ -13,7 +13,7 @@
 - [TestFramework](#testframework)
 
 ## Introduction
-Tarject is a framework developed for Unity Engine to prevent tight coupling between software modules.
+Tarject is a framework developed for Unity Engine to prevent tight coupling between software modules. It is a highly optimized and readable framework, using as little reflection as possible in Bind and Injection operations. 
 
 ## Installation
 - In Unity, open Window/Package Manager
@@ -36,7 +36,7 @@ public class AppInstaller : GameObjectInstaller
 {
     public override void Install(DIContainer container)
     {
-        container.Bind<Foo>();
+       container.Bind<Foo>();
 
         FooInstaller.CreateAndInstall(container);
     }
@@ -57,10 +57,10 @@ internal class TarjectDemoSceneInstaller : GameObjectInstaller
 ```csharp
 public class AppInstaller : GameObjectInstaller
 {
-     public override void Install(DIContainer container)
-     {
-         FooInstaller.CreateAndInstall(container);
-     }
+    public override void Install(DIContainer container)
+    {
+        FooInstaller.CreateAndInstall(container);
+    }
 }
 
 public class FooInstaller : ObjectInstaller<FooInstaller>
@@ -75,10 +75,10 @@ public class FooInstaller : ObjectInstaller<FooInstaller>
 ```csharp
 public class AppInstaller : GameObjectInstaller
 {
-     public override void Install(DIContainer container)
-     {
-         ObjectInstaller.CreateAndInstall<FooInstaller>(container);
-     }
+    public override void Install(DIContainer container)
+    {
+        ObjectInstaller.CreateAndInstall<FooInstaller>(container);
+    }
 }
 
 public class FooInstaller : ObjectInstaller
@@ -110,11 +110,260 @@ container.BindFactory<GameObjectFactory>();
 ```
 
 ## Injecter
+Inject is the process of getting the binded objects from the container. There are various ways to assign dependencies of an object. The dependencies of objects derived from MonoBehaviour are given in the `Definitions`, the dependencies of objects that do not derive from MonoBehaviour are given in the `Constructor`. 
+<br><br>In order to assign injections to these objects, the Inject attribute must first be used. It is not necessary to use it in the constructor, it just increases the injection priority.
+<br><br>**InjectAttribute** = `Inject` attribute can be applied to `Field`, `Property`, `Method`, `Constructor` and `Parameter`. This attribute also keeps the `id` received while binding and ensures that it is injected according to the relevant id.
+```csharp
+public class SampleClass : MonoInjecter
+{
+    [Inject]
+    private readonly SignalController _signalController;
+
+    [Inject("foo1")]
+    private readonly Foo _foo;
+}
+```
+```csharp
+public class SampleClass
+{
+    private readonly Foo _foo;
+
+    public SampleClass([Inject("foo1")] Foo foo)
+    {
+        _foo = foo;
+    }
+}
+```
+
+If a class has more than one constructor, whichever constructor has the inject attribute is called. 
+```csharp
+public class SampleClass
+{
+    private readonly Foo _foo;
+
+    public SampleClass(Foo foo) //Not called
+    {
+        _foo = foo;
+    }
+
+    [Inject]
+    public SampleClass() //Called
+    {
+    }
+}
+```
+
+If the inject attribute is not used at all, the one with the largest number of parameters is called.
+```csharp
+public class SampleClass
+{
+    private readonly Foo _foo;
+
+    public SampleClass(Foo foo) //Called
+    {
+        _foo = foo;
+    }
+
+    public SampleClass() //Not called
+    {
+    }
+}
+```
+
+There are **3** different injection methods
+* **MonoInjecter** = If there is a `MonoBehaviour` object that is not created with Factory, the fastest way to give dependencies is to derive this class from `MonoInjecter`. With this class, dependencies are injected from the `SceneContext` in `Awake` method.
+* **SceneInjecter** = If there is a `MonoBehaviour` object that is not created with Factory and does not derive from MonoInjecter, another way to give dependencies is to have a `SceneInjecter` in the scene. This class finds all MonoBehaviors in the entire scene in `Awake` and injects their dependencies one by one from the relevant `SceneContext`. It can be created in the scene by selecting `Tarject/SceneInjecter` from the MenuItems. It is recommended to inherit each scene object to be injected from MonoInjecter for faster injecting.
+* **Factory** = Another way to give the dependencies of objects is to create the relevant object with Factory. During creation, dependencies are injected from the container of the context to which the Factory is binded. This method can be used for all objects.
 
 ## Factory
+Objects can be created with Factory to assign dependencies and initialize them with parameters. Whichever container the Factory is binded, the dependencies of the created objects are injected from that container. There are **2** different Factory classes that inherit from the abstract Factory class.
+* **GameObjectFactory** = It is used to instantiate objects derived from MonoBehaviour.
+```csharp
+public class Installer : GameObjectInstaller
+{
+    public override void Install(DIContainer container)
+    {
+        container.BindFactory<GameObjectFactory>();
+    }
+}
+
+public class SampleClass : MonoInjecter
+{
+    [Inject]
+    private readonly GameObjectFactory _gameObjectFactory;
+
+    [SerializeField]
+    private FooItem _fooItemPrefab;
+
+    protected override void Awake()
+    {
+       base.Awake();
+
+        _gameObjectFactory.Create(_fooItemPrefab, "Sample string");
+    }
+}
+
+public class FooItem : MonoBehaviour,  IFactorable<string>
+{
+    [Inject]
+    private readonly Foo _foo;
+
+    public void InitializeFactory(string variable)
+    {
+        Debug.Log($"{_foo.index}: String variable is: {variable}");
+    }
+}
+```
+* **ObjectFactory** = It is used to create objects that do not derive from MonoBehaviour.
+```csharp
+public class Installer : GameObjectInstaller
+{
+    public override void Install(DIContainer container)
+    {
+        container.BindFactory<ObjectFactory>();
+    }
+}
+
+public class SampleClass : MonoInjecter
+{
+    [Inject]
+    private readonly ObjectFactory _objectFactory;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        _objectFactory.Create<FooItem, string>("Sample string");
+    }
+}
+
+public class FooItem : IFactorable<string>
+{
+    private readonly Foo _foo;
+
+    public FooItem(Foo foo)
+    {
+        _foo = foo;
+    }
+
+    public void InitializeFactory(string variable)
+    {
+        Debug.Log($"{_foo.index}: String variable is: {variable}");
+    }
+}
+```
 
 ## Interfaces
+These interfaces must be implemented to use Unity frame actions on binded objects that do not derive from MonoBehaviour. The methods of the relevant object are triggered by the Unity frame actions of the context in which it is binded. There are **5** different interfaces:
+* **IInitializable** = In the relevant context, there is the `Initialize` method called in `Awake`
+* **IFixedUpdatable** = In the relevant context, there is the `FixedUpdate` method called in `FixedUpdate`
+* **IUpdatable** = In the relevant context, there is the `Update` method called in `Update`
+* **ILateUpdatable** = In the relevant context, there is the `LateUpdate` method called in `LateUpdate`
+* **ILateDisposable** = In the relevant context, there is the `LateDispose` method called in `OnDestroy`
 
 ## SignalBus
+Actions that listen for signals are kept in SignalBus. When the relevant signal is fired, listening actions are triggered. In this way, there is no dependency between the place that fires the signal and the place that listens.
+```csharp
+public class Installer : GameObjectInstaller
+{
+    public override void Install(DIContainer container)
+    {
+        container.Bind<SignalController>();
+    }
+}
+
+public readonly struct FooSignal
+{
+    public readonly string Data;
+
+    public FooSignal(data)
+    {
+        Data = data;
+    }
+}
+
+public class SampleClass : MonoInjecter
+{
+    [Inject]
+    private readonly SignalController _signalController;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        SubscribeEvents();
+    }
+
+    private void SubscribeEvents()
+    {
+        _signalController.Subscribe<FooSignal>(OnFoo);
+    }
+
+    private void OnFoo(string signal)
+    {
+        Debug.Log($"Signal Received - string: {signal.Data}");
+    }
+
+    private void UnsubscribeEvents()
+    {
+        _signalController.Unsubscribe<UserDataReceivedSignal>(OnUserDataReceived);
+    }
+
+    private void OnDestroy()
+    {
+        UnsubscribeEvents();
+    }
+}
+
+public class FooItem : MonoInjecter
+{
+    [Inject]
+    private readonly SignalController _signalController;
+
+    protected override void Awake()
+    {
+    base.Awake();
+
+    _signalController.Fire(new FooSignal("Sample string from {transform.name]"));
+    }
+}
+```
 
 ## TestFramework
+For now there is only `UnitTest` support. There is an abstract `TarjectUnitTestFixture` class that creates a temporary `Container` to run UnitTests.
+```csharp
+public class SignalControllerTest : TarjectUnitTestFixture
+{
+    protected override void Setup()
+    {
+        Container.Bind<SignalController>();
+    }
+
+    [Test]
+    public void Subscribe()
+    {
+        SignalController signalController = Container.Resolve<SignalController>();
+        signalController.Subscribe<TestSignal>(Action);
+
+        void Action(TestSignal _) { }
+
+        Assert.IsTrue(signalController.Exists<TestSignal>(Action));
+    }
+
+    [Test]
+    public void Unsubscribe()
+    {
+        SignalController signalController = Container.Resolve<SignalController>();
+        signalController.Subscribe<TestSignal>(Action);
+        signalController.Unsubscribe<TestSignal>(Action);
+
+        void Action(TestSignal _) { }
+
+        Assert.IsFalse(signalController.Exists<TestSignal>(Action));
+    }
+                    
+    private readonly struct TestSignal
+    {
+    }
+}
+```
