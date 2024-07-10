@@ -1,23 +1,24 @@
 # Tarject Dependency Injection Framework
 
-## Table Of Contents
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [How to Contribute](#howtocontribute)
-- [How to Use](#howtouse)
-- [Context](#context)
-- [Installer](#installer)
-- [Binding](#binding)
-- [Injecter](#injecter)
-- [Factory](#factory)
-- [Interfaces](#interfaces)
-- [SignalBus](#signalbus)
-- [TestFramework](#testframework)
+# Table Of Contents
+* [Introduction](#introduction)
+* [Installation](#installation)
+* [How to Contribute](#how-to-contribute)
+* [How to Use](#how-to-use)
+    * [Context](#context)
+    * [Installer](#installer)
+    * [Binding](#binding)
+    * [Binding Properties](#binding-properties)
+    * [Injecter](#injecter)
+    * [Factory](#factory)
+    * [Interfaces](#interfaces)
+    * [SignalBus](#signalbus)
+    * [TestFramework](#testframework)
 
-## Introduction
+# Introduction
 Tarject is a framework developed for Unity Engine to prevent tight coupling between software modules. It is a highly optimized and readable framework, using as little reflection as possible in Bind and Injection operations. 
 
-## Installation
+# Installation
 * In Unity, open Window/Package Manager
 * Select the + button at the top left
 * Select Add package from git URL...
@@ -33,13 +34,13 @@ I want the community to lead the growth of this project.
 ## How to Use
 After importing this Framework into your project, you can read this document to get information about how to use it and examine the `Samples` folder for sample uses.
 
-### Context
+## Context
 The referenced `GameObjectInstallers` and `Container` are kept in Context, which is an abstract class. There are **3** different classes that inherit this class. Each context has a hierarchical parent context. If the relevant object cannot be found in the context during the `Resolve` process, it is searched in the parent context.
 * **ProjectContext** = It is the `first` context to be executed in all Contexts. In the application, 1 ProjectContext can be defined. In Awake, `DontDestroyOnLoad` is called and `Instance` is kept statically. There is no parent context defined. It can be created in the scene by selecting `Tarject/ProjectContext` from the MenuItems.
 * **SceneContext** = It is the `second` context to be executed in all Contexts. It carries the container of the scene in which it was created. As long as the scene runs, it runs. Parent context is defined as `ProjectContext`. It can be created in the scene by selecting `Tarject/SceneContext` from the MenuItems.
-* **ProjectContext** = It is the `third` context to be executed in all Contexts. More than one GameObjectContext can be executed at the same time. Parent context is defined as `SceneContext`. It can be created in the scene by selecting `Tarject/GameObjectContext` from the MenuItems.
+* **GameObjectContext** = It is the `third` context to be executed in all Contexts. More than one GameObjectContext can be executed at the same time. Parent context is defined as `SceneContext`. It can be created in the scene by selecting `Tarject/GameObjectContext` from the MenuItems.
 
-### Installer
+## Installer
 There are two types of installers: `GameObjectInstaller` and `ObjectInstaller`. These installers have an abstract `Install` method where bind operations are called. The container in the context in which the installs are called is also sent as a parameter to this method.
 * **GameObjectInstaller** = The installers in the scene must be derived from this class and referenced in any context in the scene.
 ```csharp
@@ -102,7 +103,7 @@ public class FooInstaller : ObjectInstaller
 }
 ```
 
-### Binding
+## Binding
 The bind method is called to bind objects to a container. As long as the container in which the object is bound is alive, objects are also run in that container. There are **4** different bind methods.
 * **Bind** = It is called to bind a class that does not have an object.
 ```csharp
@@ -121,7 +122,7 @@ container.BindFromHierarchy<Foo>();
 container.BindFactory<GameObjectFactory>();
 ```
 
-### Binding Properties
+## Binding Properties
 It includes methods of binding objects.
 * **ToInterface** = It ensures that the binded object is stored in interface type. In this way, the implementation can be abstracted and dependency on the injected classes is minimized. Whichever implementation of the interface is bound, that implementation is injected.
 ```csharp
@@ -183,7 +184,7 @@ public class FooMono : MonoBehaviour
 }
 ```
 
-### Injecter
+## Injecter
 Inject is the process of getting the binded objects from the container. There are various ways to assign dependencies of an object. The dependencies of objects derived from MonoBehaviour are given in the `Definitions`, the dependencies of objects that do not derive from MonoBehaviour are given in the `Constructor`. 
 <br><br>In order to assign injections to these objects, the Inject attribute must first be used. It is not necessary to use it in the constructor, it just increases the injection priority.
 <br><br>**InjectAttribute** = `Inject` attribute can be applied to `Field`, `Property`, `Method`, `Constructor` and `Parameter`. This attribute also keeps the `id` received while binding and ensures that it is injected according to the relevant id.
@@ -249,7 +250,7 @@ There are **3** different injection methods
 * **SceneInjecter** = If there is a `MonoBehaviour` object that is not created with Factory and does not derive from MonoInjecter, another way to give dependencies is to have a `SceneInjecter` in the scene. This class finds all MonoBehaviors in the entire scene in `Awake` and injects their dependencies one by one from the relevant `SceneContext`. It can be created in the scene by selecting `Tarject/SceneInjecter` from the MenuItems. It is recommended to inherit each scene object to be injected from MonoInjecter for faster injecting.
 * **Factory** = Another way to give the dependencies of objects is to create the relevant object with Factory. During creation, dependencies are injected from the container of the context to which the Factory is binded. This method can be used for all objects.
 
-### Factory
+## Factory
 Objects can be created with Factory to assign dependencies and initialize them with parameters. Whichever container the Factory is binded, the dependencies of the created objects are injected from that container. There are **2** different Factory classes that inherit from the abstract Factory class.
 * **GameObjectFactory** = It is used to instantiate objects derived from MonoBehaviour.
 ```csharp
@@ -327,7 +328,7 @@ public class FooItem : IFactorable<string>
 }
 ```
 
-### Interfaces
+## Interfaces
 These interfaces must be implemented to use Unity frame actions on binded objects that do not derive from MonoBehaviour. The methods of the relevant object are triggered by the Unity frame actions of the context in which it is binded. There are **5** different interfaces:
 * **IInitializable** = In the relevant context, there is the `Initialize` method called in `Awake`
 * **IFixedUpdatable** = In the relevant context, there is the `FixedUpdate` method called in `FixedUpdate`
@@ -335,7 +336,7 @@ These interfaces must be implemented to use Unity frame actions on binded object
 * **ILateUpdatable** = In the relevant context, there is the `LateUpdate` method called in `LateUpdate`
 * **ILateDisposable** = In the relevant context, there is the `LateDispose` method called in `OnDestroy`
 
-### SignalBus
+## SignalBus
 Actions that listen for signals are kept in SignalBus. When the relevant signal is fired, listening actions are triggered. In this way, there is no dependency between the place that fires the signal and the place that listens.
 ```csharp
 public class Installer : GameObjectInstaller
@@ -403,7 +404,7 @@ public class FooItem : MonoInjecter
 }
 ```
 
-### TestFramework
+## TestFramework
 For now there is only `UnitTest` support. There is an abstract `TarjectUnitTestFixture` class that creates a temporary `Container` to run UnitTests.
 ```csharp
 public class SignalControllerTest : TarjectUnitTestFixture
