@@ -25,7 +25,7 @@ Tarject is a framework developed for Unity Engine to prevent tight coupling betw
 * Paste in ```https://github.com/tariksavas/tarject.git```
 * Click the Add button
 
-## How to Contribute
+# How to Contribute
 I want the community to lead the growth of this project.
 <br><br>If you want you can take part in this by:
 * Create a pull request for upgrades or fixes
@@ -33,7 +33,7 @@ I want the community to lead the growth of this project.
 
 **You can join [Discord](https://discord.gg/7h3eBu28) for more**
 
-## How to Use
+# How to Use
 After importing this Framework into your project, you can read this document to get information about how to use it and examine the `Samples` folder for sample uses.
 
 ## Context
