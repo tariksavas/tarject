@@ -31,7 +31,7 @@ I want the community to lead the growth of this project.
 * Create a pull request for upgrades or fixes
 * Contact via email
 
-**You can join [Discord](https://discord.gg/7h3eBu28) for more**
+**You can join [Discord](https://discord.gg/Sxsut2bxQb) for more**
 
 # How to Use
 After importing this Framework into your project, you can read this document to get information about how to use it and examine the `Samples` folder for sample uses.
