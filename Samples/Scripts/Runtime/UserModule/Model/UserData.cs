@@ -1,4 +1,4 @@
-﻿namespace Runtime.UserModule.Model
+﻿namespace Tarject.Samples.Scripts.Runtime.UserModule.Model
 {
     public class UserData
     {

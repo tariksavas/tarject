@@ -1,6 +1,6 @@
-﻿using Runtime.InventoryModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 
-namespace Runtime.Signal
+namespace Tarject.Samples.Scripts.Runtime.Signal
 {
     public readonly struct UserInventoryFetchedSignal
     {

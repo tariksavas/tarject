@@ -1,9 +1,9 @@
-﻿using Runtime.UserModule.Controller;
-using Runtime.UserModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.UserModule.Controller;
+using Tarject.Samples.Scripts.Runtime.UserModule.Model;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Installer;
 
-namespace Runtime.UserModule.Installer
+namespace Tarject.Samples.Scripts.Runtime.UserModule.Installer
 {
     public class UserInstaller : ObjectInstaller<UserInstaller>
     {

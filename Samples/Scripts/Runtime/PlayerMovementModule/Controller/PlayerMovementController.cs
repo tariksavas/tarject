@@ -1,7 +1,7 @@
 using Tarject.Runtime.Core.Interfaces;
 using UnityEngine;
 
-namespace Runtime.PlayerMovementModule.Controller
+namespace Tarject.Samples.Scripts.Runtime.PlayerMovementModule.Controller
 {
     public class PlayerMovementController : IInitializable, IUpdatable
     {

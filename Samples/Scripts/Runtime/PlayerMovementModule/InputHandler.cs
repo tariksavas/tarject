@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Runtime.PlayerMovementModule
+namespace Tarject.Samples.Scripts.Runtime.PlayerMovementModule
 {
     public class InputHandler : MonoBehaviour
     {

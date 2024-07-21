@@ -1,11 +1,11 @@
-﻿using Runtime.InventoryModule.Model;
-using Runtime.Signal;
+﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
+using Tarject.Samples.Scripts.Runtime.Signal;
 using Tarject.Runtime.Core.Factory;
 using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.SignalBus.Controller;
 using UnityEngine;
 
-namespace Runtime.InventoryModule.UI
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.UI
 {
     public class InventoryPanel : MonoInjecter
     {

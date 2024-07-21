@@ -1,12 +1,12 @@
-﻿using Runtime.ConfigurationModule.Services;
-using Runtime.Signal;
-using Runtime.UserModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services;
+using Tarject.Samples.Scripts.Runtime.Signal;
+using Tarject.Samples.Scripts.Runtime.UserModule.Model;
 using System.Threading.Tasks;
 using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;
 
-namespace Runtime.UserModule.Controller
+namespace Tarject.Samples.Scripts.Runtime.UserModule.Controller
 {
     public class UserController : IInitializable
     {

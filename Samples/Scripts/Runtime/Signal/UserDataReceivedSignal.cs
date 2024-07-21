@@ -1,4 +1,4 @@
-﻿namespace Runtime.Signal
+﻿namespace Tarject.Samples.Scripts.Runtime.Signal
 {
     public readonly struct UserDataReceivedSignal
     {

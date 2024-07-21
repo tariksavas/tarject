@@ -1,6 +1,6 @@
-﻿using Runtime.InventoryModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 
-namespace Runtime.ConfigurationModule.Services
+namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
 {
     public interface IConfigurationService
     {

@@ -1,10 +1,10 @@
-﻿using Runtime.InventoryModule.Controller;
-using Runtime.InventoryModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Controller;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Factory;
 using Tarject.Runtime.Core.Installer;
 
-namespace Runtime.InventoryModule.Installer
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Installer
 {
     public class InventoryInstaller : ObjectInstaller<InventoryInstaller>
     {

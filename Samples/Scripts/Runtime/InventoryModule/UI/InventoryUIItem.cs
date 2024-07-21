@@ -1,9 +1,9 @@
-﻿using Runtime.InventoryModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Runtime.Core.Factory;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Runtime.InventoryModule.UI
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.UI
 {
     public class InventoryUIItem : MonoBehaviour, IFactorable<InventoryItem>
     {
