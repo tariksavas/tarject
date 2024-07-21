@@ -6,179 +6,190 @@ namespace Tarject.Runtime.Core.Factory
 {
     public class GameObjectFactory : Factory
     {
+        private static GameObject _hiddenParentObject;
+
         public TFactorable Create<TFactorable>(TFactorable prefab)
             where TFactorable : Component, IFactorable
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1>(TFactorable prefab, TParam1 param1)
             where TFactorable : Component, IFactorable<TParam1>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab);
-            properties.CreatedObject.InitializeFactory(param1);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization);
+            createdObject.InitializeFactory(param1);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2>(TFactorable prefab, TParam1 param1, TParam2 param2)
             where TFactorable : Component, IFactorable<TParam1, TParam2>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab);
-            properties.CreatedObject.InitializeFactory(param1, param2);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization);
+            createdObject.InitializeFactory(param1, param2);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2, TParam3>(TFactorable prefab, TParam1 param1, TParam2 param2, TParam3 param3)
             where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab);
-            properties.CreatedObject.InitializeFactory(param1, param2, param3);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization);
+            createdObject.InitializeFactory(param1, param2, param3);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4>(TFactorable prefab, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
             where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab);
-            properties.CreatedObject.InitializeFactory(param1, param2, param3, param4);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization);
+            createdObject.InitializeFactory(param1, param2, param3, param4);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4, TParam5>(TFactorable prefab, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5)
             where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4, TParam5>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab);
-            properties.CreatedObject.InitializeFactory(param1, param2, param3, param4, param5);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization);
+            createdObject.InitializeFactory(param1, param2, param3, param4, param5);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable>(TFactorable prefab, Transform parent)
             where TFactorable : Component, IFactorable
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab, parent);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization, parent);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
-        public TFactorable Create<TFactorable, TParam1>(TFactorable prefab, Transform parent, TParam1 param1) 
+        public TFactorable Create<TFactorable, TParam1>(TFactorable prefab, Transform parent, TParam1 param1)
             where TFactorable : Component, IFactorable<TParam1>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab, parent);
-            properties.CreatedObject.InitializeFactory(param1);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization, parent);
+            createdObject.InitializeFactory(param1);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2)
             where TFactorable : Component, IFactorable<TParam1, TParam2>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab, parent);
-            properties.CreatedObject.InitializeFactory(param1, param2);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization, parent);
+            createdObject.InitializeFactory(param1, param2);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2, TParam3>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3)
             where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab, parent);
-            properties.CreatedObject.InitializeFactory(param1, param2, param3);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization, parent);
+            createdObject.InitializeFactory(param1, param2, param3);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
             where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab, parent);
-            properties.CreatedObject.InitializeFactory(param1, param2, param3, param4);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization, parent);
+            createdObject.InitializeFactory(param1, param2, param3, param4);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
         public TFactorable Create<TFactorable, TParam1, TParam2, TParam3, TParam4, TParam5>(TFactorable prefab, Transform parent, TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4, TParam5 param5)
             where TFactorable : Component, IFactorable<TParam1, TParam2, TParam3, TParam4, TParam5>
         {
-            CreatedHiddenObjectProperties<TFactorable> properties = CreateHiddenObject(prefab, parent);
-            properties.CreatedObject.InitializeFactory(param1, param2, param3, param4, param5);
+            TFactorable createdObject = CreateHiddenObject(prefab, out bool setActiveAfterInitialization, parent);
+            createdObject.InitializeFactory(param1, param2, param3, param4, param5);
 
-            if (properties.PrefabWasActive)
+            if (setActiveAfterInitialization)
             {
-                properties.CreatedObject.gameObject.SetActive(true);
+                createdObject.gameObject.SetActive(true);
             }
 
-            return properties.CreatedObject;
+            return createdObject;
         }
 
-        public CreatedHiddenObjectProperties<TFactorable> CreateHiddenObject<TFactorable>(TFactorable prefab, Transform parent = null) where TFactorable : Component, IFactorable
+        public TFactorable CreateHiddenObject<TFactorable>(TFactorable prefab, out bool setActiveAfterInitialization, Transform parent = null) where TFactorable : Component, IFactorable
         {
-            bool prefabWasActive = prefab.gameObject.activeSelf;
+            setActiveAfterInitialization = prefab.gameObject.activeSelf;
 
-            prefab.gameObject.SetActive(false);
+            Transform tempParent = parent;
 
-            TFactorable createdObject = Object.Instantiate(prefab, parent);
+            if (setActiveAfterInitialization)
+            {
+#if UNITY_EDITOR
+                tempParent = GetOrCreateHiddenParent();
+#else
+                prefab.gameObject.SetActive(false);
+#endif
+            }
+
+            TFactorable createdObject = Object.Instantiate(prefab, tempParent);
             createdObject.InjectToFields(_container);
 
             if (createdObject.TryGetComponent(out MonoInjecter monoInjecter))
@@ -186,25 +197,38 @@ namespace Tarject.Runtime.Core.Factory
                 monoInjecter.Injected = true;
             }
 
-            if (prefabWasActive)
+            if (setActiveAfterInitialization)
             {
+#if UNITY_EDITOR
+                createdObject.gameObject.SetActive(false);
+#else
                 prefab.gameObject.SetActive(true);
+#endif
             }
 
-            return new CreatedHiddenObjectProperties<TFactorable>(createdObject, prefabWasActive);
+            if (createdObject.transform.parent != parent)
+            {
+                createdObject.transform.SetParent(parent, false);
+            }
+
+            return createdObject;
         }
 
-        public readonly struct CreatedHiddenObjectProperties<TFactorable> where TFactorable : Component, IFactorable
+        private Transform GetOrCreateHiddenParent()
         {
-            public readonly TFactorable CreatedObject;
-
-            public readonly bool PrefabWasActive;
-
-            public CreatedHiddenObjectProperties(TFactorable createdObject, bool prefabWasActive) : this()
+            if (_hiddenParentObject == null)
             {
-                CreatedObject = createdObject;
-                PrefabWasActive = prefabWasActive;
+                _hiddenParentObject = new GameObject("HiddenParentObject");
+                _hiddenParentObject.hideFlags = HideFlags.HideAndDontSave;
+                _hiddenParentObject.SetActive(false);
+
+                if (Application.isPlaying)
+                {
+                    Object.DontDestroyOnLoad(_hiddenParentObject);
+                }
             }
+
+            return _hiddenParentObject.transform;
         }
     }
 }
