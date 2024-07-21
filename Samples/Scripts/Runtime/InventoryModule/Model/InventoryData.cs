@@ -1,6 +1,6 @@
 ﻿using Tarject.Runtime.StructuralDefinitions;
 
-namespace Runtime.InventoryModule.Model
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Model
 {
     public class InventoryData
     {

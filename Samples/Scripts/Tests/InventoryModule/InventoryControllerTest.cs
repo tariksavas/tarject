@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Runtime.ConfigurationModule.Services;
-using Runtime.InventoryModule.Controller;
-using Runtime.InventoryModule.Model;
-using Runtime.Signal;
+using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.Controller;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
+using Tarject.Samples.Scripts.Runtime.Signal;
 using Tarject.Runtime.SignalBus.Controller;
 using Tarject.Editor.TestFramework.UnitTest;
 

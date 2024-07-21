@@ -1,8 +1,8 @@
-﻿using Runtime.InventoryModule.Model;
+﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Config;
 using UnityEngine;
 
-namespace Runtime.ConfigurationModule.Services
+namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
 {
     public class StaticConfigurationService : IConfigurationService
     {

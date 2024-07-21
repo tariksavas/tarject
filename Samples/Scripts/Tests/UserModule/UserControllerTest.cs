@@ -1,8 +1,8 @@
 ﻿using NUnit.Framework;
-using Runtime.ConfigurationModule.Services;
-using Runtime.Signal;
-using Runtime.UserModule.Controller;
-using Runtime.UserModule.Model;
+using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services;
+using Tarject.Samples.Scripts.Runtime.Signal;
+using Tarject.Samples.Scripts.Runtime.UserModule.Controller;
+using Tarject.Samples.Scripts.Runtime.UserModule.Model;
 using Tarject.Editor.TestFramework.UnitTest;
 using Tarject.Runtime.SignalBus.Controller;
 

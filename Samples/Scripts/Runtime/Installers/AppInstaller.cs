@@ -1,10 +1,10 @@
-﻿using Runtime.ConfigurationModule.Installer;
-using Runtime.UserModule.Installer;
+﻿using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Installer;
+using Tarject.Samples.Scripts.Runtime.UserModule.Installer;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Installer;
 using Tarject.Runtime.SignalBus.Controller;
 
-namespace Runtime.Installers
+namespace Tarject.Samples.Scripts.Runtime.Installers
 {
     public class AppInstaller : GameObjectInstaller
     {

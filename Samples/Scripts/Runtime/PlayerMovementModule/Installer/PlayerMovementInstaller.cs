@@ -1,8 +1,8 @@
-﻿using Runtime.PlayerMovementModule.Controller;
+﻿using Tarject.Samples.Scripts.Runtime.PlayerMovementModule.Controller;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Installer;
 
-namespace Runtime.PlayerMovementModule.Installer
+namespace Tarject.Samples.Scripts.Runtime.PlayerMovementModule.Installer
 {
     public class PlayerMovementInstaller : ObjectInstaller<PlayerMovementInstaller>
     {

@@ -1,13 +1,13 @@
-﻿using Runtime.ConfigurationModule.Services;
-using Runtime.InventoryModule.Model;
-using Runtime.Signal;
+﻿using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
+using Tarject.Samples.Scripts.Runtime.Signal;
 using System;
 using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.Core.Interfaces;
 using Tarject.Runtime.SignalBus.Controller;
 using Tarject.Runtime.StructuralDefinitions;
 
-namespace Runtime.InventoryModule.Controller
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Controller
 {
     public class InventoryController : IInitializable, ILateDisposable
     {
