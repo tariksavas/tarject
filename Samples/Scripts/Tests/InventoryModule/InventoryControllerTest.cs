@@ -8,7 +8,6 @@ using Tarject.Editor.TestFramework.UnitTest;
 
 namespace Tarject.Samples.Scripts.Tests.InventoryModule
 {
-    [TestFixture]
     public class InventoryControllerTest : TarjectUnitTestFixture
     {
         protected override void Setup()

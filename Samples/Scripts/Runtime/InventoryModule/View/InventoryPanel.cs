@@ -5,7 +5,7 @@ using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.SignalBus.Controller;
 using UnityEngine;
 
-namespace Tarject.Samples.Scripts.Runtime.InventoryModule.UI
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
 {
     public class InventoryPanel : MonoInjecter
     {
