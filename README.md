@@ -141,6 +141,26 @@ public class Foo : MonoBehaviour
     private readonly IConfigurationService _configurationService; //StaticConfigurationService object Injected
 }
 ```
+```csharp
+public class AppInstaller : GameObjectInstaller
+{
+    public override void Install(DIContainer container)
+    {
+        container.Bind<StaticConfigurationService>().ToInterface<IConfigurationService>();
+        container.Bind<RemoteConfigurationService>().ToInterface<IConfigurationService>();
+        container.Bind<Foo>();
+    }
+}
+public class Foo
+{
+    private readonly IConfigurationService[] _configurationServices; //StaticConfigurationService and RemoteConfigurationService objects Injected
+
+    public Foo(IConfigurationService[] configurationServices)
+    {
+       _configurationServices = configurationServices;
+    }
+}
+```
 * **WithId** = It is used to specify a binded object according to its id. In this way, more than one object from the same class can be binded with different ids. While injecting, the object is resolved according to the specified id.
 ```csharp
 public class AppInstaller : GameObjectInstaller
