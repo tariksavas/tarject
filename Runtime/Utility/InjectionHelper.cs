@@ -26,16 +26,40 @@ namespace Tarject.Runtime.Utility
                 Type parameterType = parameter.ParameterType;
 
                 InjectAttribute injectAttribute = parameter.GetCustomAttribute<InjectAttribute>();
-                
-                object parameterObject = container.Resolve<object>(parameterType, injectAttribute?.Id);
-                if (parameterObject == null)
-                {
-                    Debug.LogError($"Can not resolve depenceny! Type: {type} --- DependencyType: {parameterType}");
-                    return false;
-                }
 
-                Array.Resize(ref objects, objects.Length + 1);
-                objects[^1] = parameterObject;
+                if (!parameterType.IsArray)
+                {
+                    object parameterObject = container.Resolve<object>(parameterType, injectAttribute?.Id);
+                    if (parameterObject == null)
+                    {
+                        Debug.LogError($"Can not resolve depenceny! Type: {type} --- DependencyType: {parameterType}");
+                        return false;
+                    }
+
+                    Array.Resize(ref objects, objects.Length + 1);
+                    objects[^1] = parameterObject;
+                }
+                else
+                {
+                    Type elementType = parameterType.GetElementType();
+
+                    object[] parameterObjects = container.ResolveAll<object>(elementType, injectAttribute?.Id);
+                    if (parameterObjects == null)
+                    {
+                        Debug.LogError($"Can not resolve depenceny! Type: {type} --- DependencyType: {elementType}");
+                        return false;
+                    }
+
+                    Array parameterArray = Array.CreateInstance(elementType, parameterObjects.Length);
+
+                    for (int index = 0; index < parameterObjects.Length; index++)
+                    {
+                        parameterArray.SetValue(parameterObjects[index], index);
+                    }
+
+                    Array.Resize(ref objects, objects.Length + 1);
+                    objects[^1] = parameterArray;
+                }
             }
 
             return true;

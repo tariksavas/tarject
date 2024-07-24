@@ -3,6 +3,7 @@ using Tarject.Samples.Scripts.Runtime.UserModule.Installer;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Installer;
 using Tarject.Runtime.SignalBus.Controller;
+using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Installer;
 
 namespace Tarject.Samples.Scripts.Runtime.Installers
 {
@@ -15,6 +16,8 @@ namespace Tarject.Samples.Scripts.Runtime.Installers
             UserInstaller.CreateAndInstall(container);
 
             ConfigurationModuleInstaller.CreateAndInstall(container);
+
+            GameSaveDataInstaller.CreateAndInstall(container);
         }
     }
 }

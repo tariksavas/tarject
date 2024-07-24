@@ -14,7 +14,10 @@ namespace Tarject.Tests.Editor.Core
 
             Container.Bind<BindWithIdTestClass>().WithId("testId");
 
-            Container.Bind<BindToInterfaceTestClass>().ToInterface<IBindToInterfaceTestInterface>();
+            Container.Bind<BindToInterfaceTestFirstClass>().ToInterface<IBindToInterfaceTestInterface>();
+            Container.Bind<BindToInterfaceTestSecondClass>().ToInterface<IBindToInterfaceTestInterface>();
+
+            Container.Bind<BindToInterfaceConcreteClass>();
         }
 
         [Test]
@@ -49,6 +52,15 @@ namespace Tarject.Tests.Editor.Core
             Assert.IsNotNull(bindToInterfaceTestInterface);
         }
 
+        [Test]
+        public void Resolve_All_Bind_ToInterface()
+        {
+            BindToInterfaceConcreteClass bindToInterfaceConcreteClass = Container.Resolve<BindToInterfaceConcreteClass>();
+
+            Assert.IsNotNull(bindToInterfaceConcreteClass);
+            Assert.IsTrue(bindToInterfaceConcreteClass.GetInterfaceLength == 2);
+        }
+
         private class BindTestClass
         {
         }
@@ -57,12 +69,28 @@ namespace Tarject.Tests.Editor.Core
         {
         }
 
-        private class BindToInterfaceTestClass : IBindToInterfaceTestInterface
+        private class BindToInterfaceTestFirstClass : IBindToInterfaceTestInterface
+        {
+        }
+
+        private class BindToInterfaceTestSecondClass : IBindToInterfaceTestInterface
         {
         }
 
         private interface IBindToInterfaceTestInterface
         {
+        }
+
+        private class BindToInterfaceConcreteClass
+        {
+            private readonly IBindToInterfaceTestInterface[] _interfaces;
+
+            public BindToInterfaceConcreteClass(IBindToInterfaceTestInterface[] interfaces)
+            {
+                _interfaces = interfaces;
+            }
+
+            public int GetInterfaceLength => _interfaces.Length;
         }
 
         private class BindFromInstanceTestClass

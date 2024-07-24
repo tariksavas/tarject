@@ -94,6 +94,32 @@ namespace Tarject.Runtime.Core.Context
             return bindedObject.CreatedObject as T;
         }
 
+        public T[] ResolveAll<T>(Type type = null, string id = "") where T : class
+        {
+            type ??= typeof(T);
+
+            Predicate<BindedObject> predicate = string.IsNullOrEmpty(id)
+                ? x => x.Type == type || x.InterfaceType == type
+                : x => x.Id == id && (x.Type == type || x.InterfaceType == type);
+
+            OptimizedList<BindedObject> bindedObjects = _bindedObjects.FindAll(predicate);
+            if (bindedObjects == null || bindedObjects.Count == 0)
+            {
+                return _parentDIContainer?.ResolveAll<T>(type, id);
+            }
+
+            T[] createdObjects = new T[bindedObjects.Count];
+
+            for (int index = 0; index < bindedObjects.Count; index++)
+            {
+                TryCreateBindedObject(bindedObjects[index]);
+
+                createdObjects[index] = bindedObjects[index].CreatedObject as T;
+            }
+
+            return createdObjects;
+        }
+
         private void TryCreateBindedObject(BindedObject bindedObject)
         {
             if (bindedObject.CreatedObject != null || !bindedObject.Type.TryGetDependencies(out object[] objects, this))

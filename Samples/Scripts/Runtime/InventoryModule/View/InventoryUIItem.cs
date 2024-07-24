@@ -3,7 +3,7 @@ using Tarject.Runtime.Core.Factory;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Tarject.Samples.Scripts.Runtime.InventoryModule.UI
+namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
 {
     public class InventoryUIItem : MonoBehaviour, IFactorable<InventoryItem>
     {
