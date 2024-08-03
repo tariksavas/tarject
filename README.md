@@ -25,6 +25,8 @@ Tarject is a framework developed for Unity Engine to prevent tight coupling betw
 * Paste in ```https://github.com/tariksavas/tarject.git```
 * Click the Add button
 
+**You can also download the package from [Unity Asset Store](https://assetstore.unity.com/packages/slug/289571)**
+
 # How to Contribute
 I want the community to lead the growth of this project.
 <br><br>If you want you can take part in this by:
