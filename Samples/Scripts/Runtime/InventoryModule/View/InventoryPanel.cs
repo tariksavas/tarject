@@ -1,6 +1,5 @@
 ﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Samples.Scripts.Runtime.Signal;
-using Tarject.Runtime.Core.Factory;
 using Tarject.Runtime.Core.Injecter;
 using Tarject.Runtime.SignalBus.Controller;
 using UnityEngine;
@@ -16,7 +15,7 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
         private readonly SignalController _signalController;
         
         [Inject]
-        private readonly GameObjectFactory _gameObjectFactory;
+        private readonly InventoryUIItem.Factory _inventoryUIItemFactory;
 
         [SerializeField]
         private Transform _content;
@@ -50,7 +49,7 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
 
             for (int index = 0; index < inventoryData.items.Count; index++)
             {
-                _gameObjectFactory.Create(_inventoryUIItemPrefab, _content, inventoryData.items[index]);
+                _inventoryUIItemFactory.Create(_inventoryUIItemPrefab, _content, inventoryData.items[index]);
             }
         }
 

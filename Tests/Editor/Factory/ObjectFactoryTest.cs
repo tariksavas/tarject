@@ -8,51 +8,56 @@ namespace Tarject.Tests.Editor.Factory
     {
         protected override void Setup()
         {
-            Container.BindFactory<ObjectFactory>();
+            Container.BindFactory<FactoryTestClass.Factory>();
+            Container.BindFactory<FactorySingleParamTestClass.Factory>();
+            Container.BindFactory<FactoryMultipleParamTestClass.Factory>();
+            Container.BindFactory<FactoryInjectionTestClass.Factory>();
+            Container.Bind<FactoryBindableClass>().Lazy();
         }
 
         [Test]
         public void Create()
         {
-            ObjectFactory factory = Container.Resolve<ObjectFactory>();
-            FactoryTestClass factoryTestClass = factory.Create<FactoryTestClass>();
+            FactoryTestClass.Factory factory = Container.Resolve<FactoryTestClass.Factory>();
+            FactoryTestClass createdObject = factory.Create();
 
-            Assert.IsNotNull(factoryTestClass);
+            Assert.IsNotNull(createdObject);
         }
 
         [Test]
         public void Create_With_Param1()
         {
-            ObjectFactory factory = Container.Resolve<ObjectFactory>();
-            FactorySingleParamTestClass factoryTestClass = factory.Create<FactorySingleParamTestClass, string>("factoryParam");
+            FactorySingleParamTestClass.Factory factory = Container.Resolve<FactorySingleParamTestClass.Factory>();
+            FactorySingleParamTestClass createdObject = factory.Create("factoryParam");
 
-            Assert.IsNotNull(factoryTestClass);
-            Assert.IsTrue(factoryTestClass.Param == "factoryParam");
+            Assert.IsNotNull(createdObject);
+            Assert.IsTrue(createdObject.Param == "factoryParam");
         }
         
         [Test]
         public void Create_With_Param2()
         {
-            ObjectFactory factory = Container.Resolve<ObjectFactory>();
-            FactoryMultipleParamTestClass factoryTestClass = factory.Create<FactoryMultipleParamTestClass, int, string>(26, "tariksavas");
+            FactoryMultipleParamTestClass.Factory factory = Container.Resolve<FactoryMultipleParamTestClass.Factory>();
+            FactoryMultipleParamTestClass createdObject = factory.Create(26, "tariksavas");
 
-            Assert.IsNotNull(factoryTestClass);
-            Assert.IsTrue(factoryTestClass.Id == 26);
-            Assert.IsTrue(factoryTestClass.Name == "tariksavas");
+            Assert.IsNotNull(createdObject);
+            Assert.IsTrue(createdObject.Id == 26);
+            Assert.IsTrue(createdObject.Name == "tariksavas");
         }
         
         [Test]
         public void Injection_After_Create()
         {
-            ObjectFactory factory = Container.Resolve<ObjectFactory>();
-            FactoryInjectionTestClass factoryTestClass = factory.Create<FactoryInjectionTestClass>();
+            FactoryInjectionTestClass.Factory factory = Container.Resolve<FactoryInjectionTestClass.Factory>();
+            FactoryInjectionTestClass createdObject = factory.Create();
 
-            Assert.IsNotNull(factoryTestClass);
-            Assert.IsNotNull(factoryTestClass.ObjectFactory);
+            Assert.IsNotNull(createdObject);
+            Assert.IsNotNull(createdObject.factoryBindableClass);
         }
 
         private class FactoryTestClass : IFactorable
         {
+            public class Factory : SeparatedObjectFactory<FactoryTestClass> { }
         }
 
         private class FactorySingleParamTestClass : IFactorable<string>
@@ -63,6 +68,8 @@ namespace Tarject.Tests.Editor.Factory
             {
                 Param = param;
             }
+
+            public class Factory : SeparatedObjectFactory<FactorySingleParamTestClass, string> { }
         }
 
         private class FactoryMultipleParamTestClass : IFactorable<int, string>
@@ -76,16 +83,25 @@ namespace Tarject.Tests.Editor.Factory
                 Id = param1;
                 Name = param2;
             }
+
+            public class Factory : SeparatedObjectFactory<FactoryMultipleParamTestClass, int ,string> { }
         }
 
         private class FactoryInjectionTestClass : IFactorable
         {
-            public readonly ObjectFactory ObjectFactory;
+            public readonly FactoryBindableClass factoryBindableClass;
 
-            public FactoryInjectionTestClass(ObjectFactory objectFactory)
+            public FactoryInjectionTestClass(FactoryBindableClass factoryBindableClass)
             {
-                ObjectFactory = objectFactory;
+                this.factoryBindableClass = factoryBindableClass;
             }
+
+            public class Factory : SeparatedObjectFactory<FactoryInjectionTestClass> { }
+        }
+
+        private class FactoryBindableClass
+        {
+
         }
     }
 }

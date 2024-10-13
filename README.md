@@ -275,21 +275,21 @@ There are **3** different injection methods
 * **Factory** = Another way to give the dependencies of objects is to create the relevant object with Factory. During creation, dependencies are injected from the container of the context to which the Factory is binded. This method can be used for all objects.
 
 ## Factory
-Objects can be created with Factory to assign dependencies and initialize them with parameters. Whichever container the Factory is binded, the dependencies of the created objects are injected from that container. There are **2** different Factory classes that inherit from the abstract Factory class.
-* **GameObjectFactory** = It is used to instantiate objects derived from MonoBehaviour.
+Objects can be created with Factory to assign dependencies and initialize them with parameters. Whichever container the Factory is binded, the dependencies of the created objects are injected from that container. A factory class is defined for each factorable object. There are **2** different base factory classes that can be inherited.
+* **SeparatedGameObjectFactory** = It is used to instantiate objects derived from MonoBehaviour. When inheriting this class, the objects and parameters to be created must be defined as types.
 ```csharp
 public class Installer : GameObjectInstaller
 {
     public override void Install(DIContainer container)
     {
-        container.BindFactory<GameObjectFactory>();
+        container.BindFactory<FooItem.Factory>();
     }
 }
 
 public class SampleClass : MonoInjecter
 {
     [Inject]
-    private readonly GameObjectFactory _gameObjectFactory;
+    private readonly FooItem.Factory _fooItemFactory;
 
     [SerializeField]
     private FooItem _fooItemPrefab;
@@ -298,7 +298,7 @@ public class SampleClass : MonoInjecter
     {
        base.Awake();
 
-        _gameObjectFactory.Create(_fooItemPrefab, "Sample string");
+        FooItem fooItem = _fooItemFactory.Create(_fooItemPrefab, "Sample string");
     }
 }
 
@@ -311,32 +311,40 @@ public class FooItem : MonoBehaviour,  IFactorable<string>
     {
         Debug.Log($"{_foo.index}: String variable is: {variable}");
     }
+
+    public class Factory : SeparatedGameObjectFactory<FooItem, string>  { }
 }
 ```
-* **ObjectFactory** = It is used to create objects that do not derive from MonoBehaviour.
+* **SeparatedObjectFactory** = It is used to create objects that do not derive from MonoBehaviour. When inheriting this class, the objects and parameters to be created must be defined as types.
 ```csharp
 public class Installer : GameObjectInstaller
 {
     public override void Install(DIContainer container)
     {
-        container.BindFactory<ObjectFactory>();
+        container.BindFactory<FooItem.Factory>();
+        container.BindFactory<FooItemWithoutParam.Factory>();
     }
 }
 
 public class SampleClass : MonoInjecter
 {
     [Inject]
-    private readonly ObjectFactory _objectFactory;
+    private readonly FooItem.Factory _fooItemFactory;
+    
+    [Inject]
+    private readonly FooItemWithoutParam.Factory _fooItemWithoutParamFactory;
 
     protected override void Awake()
     {
         base.Awake();
 
-        _objectFactory.Create<FooItem, string>("Sample string");
+        FooItem fooItem = _fooItemFactory.Create(26);
+
+        FooItemWithoutParam fooItemWithoutParam = _fooItemWithoutParamFactory.Create();
     }
 }
 
-public class FooItem : IFactorable<string>
+public class FooItem : IFactorable<int>
 {
     private readonly Foo _foo;
 
@@ -345,10 +353,24 @@ public class FooItem : IFactorable<string>
         _foo = foo;
     }
 
-    public void InitializeFactory(string variable)
+    public void InitializeFactory(int variable)
     {
-        Debug.Log($"{_foo.index}: String variable is: {variable}");
+        Debug.Log($"{_foo.index}: int variable is: {variable}");
     }
+
+    public class Factory : SeparatedObjectFactory<FooItem, int> { }
+}
+
+public class FooItemWithoutParam : IFactorable
+{
+    private readonly Foo _foo;
+
+    public FooItemWithoutParam(Foo foo)
+    {
+        _foo = foo;
+    }
+
+    public class Factory : SeparatedObjectFactory<FooItemWithoutParam> { }
 }
 ```
 
@@ -460,7 +482,7 @@ public class SignalControllerTest : TarjectUnitTestFixture
 
         Assert.IsFalse(signalController.Exists<TestSignal>(Action));
     }
-                    
+
     private readonly struct TestSignal
     {
     }

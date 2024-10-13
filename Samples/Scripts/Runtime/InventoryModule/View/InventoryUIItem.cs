@@ -27,5 +27,10 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
 
             _itemImage.color = inventoryItem.ItemColor;
         }
+
+        public class Factory : SeparatedGameObjectFactory<InventoryUIItem, InventoryItem>
+        {
+
+        }
     }
 }

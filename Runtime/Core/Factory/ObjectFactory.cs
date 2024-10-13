@@ -3,6 +3,7 @@ using Tarject.Runtime.Utility;
 
 namespace Tarject.Runtime.Core.Factory
 {
+    [Obsolete("Create a Factory class under each Factorable object that inherits the SeparatedObjectFactory. You can read the documentation for more details.")]
     public class ObjectFactory : Factory
     {
         public TFactorable Create<TFactorable>()

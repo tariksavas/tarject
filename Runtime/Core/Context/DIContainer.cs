@@ -39,7 +39,7 @@ namespace Tarject.Runtime.Core.Context
         {
             Type type = typeof(T);
 
-            object instance = UnityEngine.Object.FindAnyObjectByType<T>();
+            object instance = UnityEngine.Object.FindObjectOfType<T>();
 
             BindedObject bindedObject = new BindedObject(type, instance);
             _bindedObjects.Add(bindedObject);
@@ -51,11 +51,7 @@ namespace Tarject.Runtime.Core.Context
         {
             Type type = typeof(T);
 
-            object createdObject = Activator.CreateInstance(type);
-
-            ((T)createdObject).SetContainer(this);
-
-            BindedObject bindedObject = new BindedObject(type, createdObject);
+            BindedObject bindedObject = new BindedFactory(type, this);
             _bindedObjects.Add(bindedObject);
 
             return bindedObject;
@@ -130,6 +126,11 @@ namespace Tarject.Runtime.Core.Context
             bindedObject.CreatedObject = objects.Length > 0
                 ? Activator.CreateInstance(bindedObject.Type, objects)
                 : Activator.CreateInstance(bindedObject.Type);
+
+            if (bindedObject is BindedFactory bindedFactory)
+            {
+                bindedFactory.InitializeFactory();
+            }
         }
 
         public OptimizedList<T> GetObjectsOfType<T>() where T : class

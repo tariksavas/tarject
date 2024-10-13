@@ -21,7 +21,7 @@ namespace Tarject.Runtime.Core.Context
         {
             base.OnDestroy();
 
-            gameObject.scene.RemoveSceneContainerRegistrty();
+            gameObject.scene.RemoveSceneContainerRegistry();
         }
     }
 }
