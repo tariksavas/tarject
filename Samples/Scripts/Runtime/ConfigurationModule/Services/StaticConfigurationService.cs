@@ -20,7 +20,7 @@ namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
         {
             return new InventoryItem[]
             {
-                new InventoryItem(0, 1, "Sword", Color.blue),
+                new InventoryItem(0, 2, "Sword", Color.blue),
                 new InventoryItem(1, 1, "Armor", Color.green),
                 new InventoryItem(2, 5, "Potion", Color.red)
             };

@@ -32,7 +32,7 @@ namespace Tarject.Samples.Scripts.Runtime.UserModule.Controller
         private async void InitializeUserDataAsync()
         {
             //Custom delay like in webrequest
-            await Task.Delay(500);
+            await Task.Delay(1);
 
             _userData.userId = _configurationService.GetUserIdConfiguration();
             _userData.username = _configurationService.GetUserNameConfiguration();

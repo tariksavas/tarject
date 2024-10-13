@@ -1,8 +1,9 @@
 ﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Controller;
 using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Runtime.Core.Context;
-using Tarject.Runtime.Core.Factory;
 using Tarject.Runtime.Core.Installer;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.View;
+using Tarject.Runtime.Core.Factory;
 
 namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Installer
 {
@@ -13,7 +14,7 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Installer
             container.Bind<InventoryData>().WithId("userInventory");
             container.Bind<InventoryController>();
 
-            container.BindFactory<GameObjectFactory>();
+            container.BindFactory<InventoryUIItem.Factory>();
         }
     }
 }

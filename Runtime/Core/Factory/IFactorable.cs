@@ -4,9 +4,9 @@
     {
     }
 
-    public interface IFactorable<TParam1> : IFactorable
+    public interface IFactorable<TParam> : IFactorable
     {
-        void InitializeFactory(TParam1 param);
+        void InitializeFactory(TParam param);
     }
 
     public interface IFactorable<TParam1, TParam2> : IFactorable

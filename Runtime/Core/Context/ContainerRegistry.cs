@@ -12,7 +12,7 @@ namespace Tarject.Runtime.Core.Context
             _sceneContainerMap.Add(scene, container);
         }
 
-        public static void RemoveSceneContainerRegistrty(this Scene scene)
+        public static void RemoveSceneContainerRegistry(this Scene scene)
         {
             _sceneContainerMap.Remove(scene);
         }
