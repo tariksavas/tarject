@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 using Tarject.Runtime.Core.Context;
@@ -36,3 +37,4 @@ namespace Tarject.Editor.Menu
         }
     }
 }
+#endif
