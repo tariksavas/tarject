@@ -10,7 +10,7 @@ namespace Tarject.Tests.Editor.Core
             Container.Bind<BindTestClass>();
 
             BindFromInstanceTestClass instance = new BindFromInstanceTestClass("testInstance");
-            Container.BindFromInstance<BindFromInstanceTestClass>(instance);
+            Container.BindFromInstance(instance);
 
             Container.Bind<BindWithIdTestClass>().WithId("testId");
 

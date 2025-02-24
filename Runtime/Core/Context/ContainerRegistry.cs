@@ -19,7 +19,12 @@ namespace Tarject.Runtime.Core.Context
 
         public static DIContainer GetSceneContainer(this Scene scene)
         {
-            return _sceneContainerMap[scene];
+            if (_sceneContainerMap.TryGetValue(scene, out DIContainer container))
+            {
+                return container;
+            }
+
+            return ProjectContext.Instance.Container;
         }
     }
 }
