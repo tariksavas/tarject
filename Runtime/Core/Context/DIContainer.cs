@@ -25,7 +25,7 @@ namespace Tarject.Runtime.Core.Context
             return bindedObject;
         }
 
-        public BindedObject BindFromInstance<T>(object instance) where T : class
+        public BindedObject BindFromInstance<T>(T instance) where T : class
         {
             Type type = typeof(T);
 
@@ -39,7 +39,7 @@ namespace Tarject.Runtime.Core.Context
         {
             Type type = typeof(T);
 
-            object instance = UnityEngine.Object.FindObjectOfType<T>();
+            T instance = UnityEngine.Object.FindObjectOfType<T>();
 
             BindedObject bindedObject = new BindedObject(type, instance);
             _bindedObjects.Add(bindedObject);

@@ -35,10 +35,20 @@ namespace Tarject.Runtime.Utility
                 return _fieldInfoCache[type];
             }
 
-            FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-            _fieldInfoCache.Add(type, fields);
+            FieldInfo[] baseTypeFields = type.BaseType != null
+                ? GetCachedFields(type.BaseType)
+                : Array.Empty<FieldInfo>();
 
-            return fields;
+            FieldInfo[] ownFields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            FieldInfo[] allFields = new FieldInfo[baseTypeFields.Length + ownFields.Length];
+
+            Array.Copy(baseTypeFields, 0, allFields, 0, baseTypeFields.Length);
+            Array.Copy(ownFields, 0, allFields, baseTypeFields.Length, ownFields.Length);
+
+            _fieldInfoCache.TryAdd(type, allFields);
+
+            return allFields;
         }
 
         public static ConstructorInfo GetCachedInjectableConstructor(this Type type)
