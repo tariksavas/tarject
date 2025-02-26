@@ -28,7 +28,7 @@ namespace Tarject.Runtime.Core.Factory
             TFactorable createdObject = Object.Instantiate(prefab, tempParent);
             createdObject.InjectToFields(dIContainer);
 
-            if (createdObject.TryGetComponent(out MonoInjecter monoInjecter))
+            if (createdObject is MonoInjecter monoInjecter)
             {
                 monoInjecter.Injected = true;
             }
