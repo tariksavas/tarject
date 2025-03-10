@@ -31,6 +31,7 @@ namespace Tarject.Runtime.Core.Context
             GetTriggerableInterfaces();
 
             _initializables.ForEach(x => x.Initialize());
+
         }
 
         protected abstract void SetParentContainer();
@@ -59,22 +60,22 @@ namespace Tarject.Runtime.Core.Context
 
         private void Update()
         {
-            _updatables.ForEach(x => x.Update());
+            _updatables?.ForEach(x => x.Update());
         }
 
         private void FixedUpdate()
         {
-            _fixedUpdatables.ForEach(x => x.FixedUpdate());
+            _fixedUpdatables?.ForEach(x => x.FixedUpdate());
         }
 
         private void LateUpdate()
         {
-            _lateUpdatables.ForEach(x => x.LateUpdate());
+            _lateUpdatables?.ForEach(x => x.LateUpdate());
         }
 
         protected virtual void OnDestroy()
         {
-            _lateDisposables.ForEach(x => x.LateDispose());
+            _lateDisposables?.ForEach(x => x.LateDispose());
         }
     }
 }
