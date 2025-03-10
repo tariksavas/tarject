@@ -32,7 +32,6 @@ namespace Tarject.Runtime.Core.Context
 
             _initializables.ForEach(x => x.Initialize());
 
-            _initialized = true;
         }
 
         protected abstract void SetParentContainer();
