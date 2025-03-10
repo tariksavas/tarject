@@ -31,7 +31,6 @@ namespace Tarject.Runtime.Core.Context
             GetTriggerableInterfaces();
 
             _initializables.ForEach(x => x.Initialize());
-
         }
 
         protected abstract void SetParentContainer();
