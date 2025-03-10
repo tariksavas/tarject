@@ -20,8 +20,6 @@ namespace Tarject.Runtime.Core.Context
         private OptimizedList<ILateUpdatable> _lateUpdatables;
         private OptimizedList<ILateDisposable> _lateDisposables;
 
-        private bool _initialized = false;
-
         protected virtual void Awake()
         {
             SetParentContainer();
@@ -63,26 +61,22 @@ namespace Tarject.Runtime.Core.Context
 
         private void Update()
         {
-            if (!_initialized) return;
-            _updatables.ForEach(x => x.Update());
+            _updatables?.ForEach(x => x.Update());
         }
 
         private void FixedUpdate()
         {
-            if (!_initialized) return;
-            _fixedUpdatables.ForEach(x => x.FixedUpdate());
+            _fixedUpdatables?.ForEach(x => x.FixedUpdate());
         }
 
         private void LateUpdate()
         {
-            if (!_initialized) return;
-            _lateUpdatables.ForEach(x => x.LateUpdate());
+            _lateUpdatables?.ForEach(x => x.LateUpdate());
         }
 
         protected virtual void OnDestroy()
         {
-            if (!_initialized) return;
-            _lateDisposables.ForEach(x => x.LateDispose());
+            _lateDisposables?.ForEach(x => x.LateDispose());
         }
     }
 }
