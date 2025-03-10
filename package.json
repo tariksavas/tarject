@@ -8,6 +8,13 @@
     "documentationUrl": "https://github.com/tariksavas/tarject/blob/main/README.md",
     "changelogUrl": "https://github.com/tariksavas/tarject/releases",
     "licensesUrl": "https://github.com/tariksavas/tarject/blob/main/LICENSE.md",
+    "samples": [
+        {
+            "displayName": "Tarject Samples",
+            "description": "A collection of example scenes and scripts demonstrating how to use the Tarject Dependency Injection Framework in Unity projects.",
+            "path": "Samples~"
+        }
+    ],
     "keywords": [
         "di",
         "dependency",
