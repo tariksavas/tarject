@@ -27,22 +27,27 @@ namespace Tarject.Tests.Editor.Factory
         [Test]
         public void Create_With_Param1()
         {
+            const string param = "factoryParam";
+            
             FactorySingleParamTestClass.Factory factory = Container.Resolve<FactorySingleParamTestClass.Factory>();
-            FactorySingleParamTestClass createdObject = factory.Create("factoryParam");
+            FactorySingleParamTestClass createdObject = factory.Create(param);
 
             Assert.IsNotNull(createdObject);
-            Assert.IsTrue(createdObject.Param == "factoryParam");
+            Assert.IsTrue(createdObject.Param == param);
         }
         
         [Test]
         public void Create_With_Param2()
         {
+            const int id = 26;
+            const string name = "tariksavas";
+            
             FactoryMultipleParamTestClass.Factory factory = Container.Resolve<FactoryMultipleParamTestClass.Factory>();
-            FactoryMultipleParamTestClass createdObject = factory.Create(26, "tariksavas");
+            FactoryMultipleParamTestClass createdObject = factory.Create(id, name);
 
             Assert.IsNotNull(createdObject);
-            Assert.IsTrue(createdObject.Id == 26);
-            Assert.IsTrue(createdObject.Name == "tariksavas");
+            Assert.IsTrue(createdObject.Id == id);
+            Assert.IsTrue(createdObject.Name == name);
         }
         
         [Test]

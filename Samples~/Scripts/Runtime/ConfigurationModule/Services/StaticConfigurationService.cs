@@ -1,6 +1,4 @@
-﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
-using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Config;
-using UnityEngine;
+﻿using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Config;
 
 namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
 {
@@ -14,16 +12,6 @@ namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
         public string GetUserNameConfiguration()
         {
             return UserConfigs.USER_NAME;
-        }
-
-        public InventoryItem[] GetInventoryItemConfiguration()
-        {
-            return new InventoryItem[]
-            {
-                new InventoryItem(0, 2, "Sword", Color.blue),
-                new InventoryItem(1, 1, "Armor", Color.green),
-                new InventoryItem(2, 5, "Potion", Color.red)
-            };
         }
     }
 }

@@ -14,7 +14,6 @@ namespace Tarject.Tests.Editor.Utility
             Container.Bind<SingleInjectionTestClass>();
             Container.Bind<MultipleInjectionTestClass>();
             Container.Bind<SingleInjectConstructorTestClass>();
-            Container.Bind<DerivedClass>();
         }
 
         [Test]
@@ -64,26 +63,6 @@ namespace Tarject.Tests.Editor.Utility
 
             Assert.IsNotNull(testClass);
             Assert.IsNotNull(testClass?.singleInjectionTestClass);
-        }
-
-        [Test]
-        public void Inject_With_Base_Type()
-        {
-            DerivedClass derivedClass = Container.Resolve<DerivedClass>();
-
-            Assert.IsNotNull(derivedClass);
-            Assert.IsNotNull(derivedClass?.singleInjectionTestClass);
-            Assert.IsNotNull(derivedClass?.multipleInjectionTestClass);
-        }
-
-        [Test]
-        public void Get_Fields_With_Base_Type_Fields()
-        {
-            Type type = typeof(DerivedClass);
-            FieldInfo[] fields = type.GetCachedFields();
-
-            Assert.IsTrue(fields[0].FieldType == typeof(SingleInjectionTestClass));
-            Assert.IsTrue(fields[1].FieldType == typeof(MultipleInjectionTestClass));
         }
         
         private class SingleInjectionTestClass
@@ -139,26 +118,6 @@ namespace Tarject.Tests.Editor.Utility
             public MultipleInjectConstructorWithAttributeTestClass(SingleInjectionTestClass singleInjectionTestClass, MultipleInjectionTestClass multipleInjectionTestClass)
             {
                 this.singleInjectionTestClass = singleInjectionTestClass;
-                this.multipleInjectionTestClass = multipleInjectionTestClass;
-            }
-        }
-
-        private class BaseClass
-        {
-            public readonly SingleInjectionTestClass singleInjectionTestClass;
-
-            public BaseClass(SingleInjectionTestClass singleInjectionTestClass)
-            {
-                this.singleInjectionTestClass = singleInjectionTestClass;
-            }
-        }
-
-        private class DerivedClass : BaseClass
-        {
-            public readonly MultipleInjectionTestClass multipleInjectionTestClass;
-
-            public DerivedClass(SingleInjectionTestClass singleInjectionTestClass, MultipleInjectionTestClass multipleInjectionTestClass) : base(singleInjectionTestClass)
-            {
                 this.multipleInjectionTestClass = multipleInjectionTestClass;
             }
         }

@@ -1,18 +1,14 @@
 ﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
-using Tarject.Samples.Scripts.Runtime.Signal;
 using Tarject.Runtime.Core.Injecter;
-using Tarject.Runtime.SignalBus.Controller;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.Controller;
 using UnityEngine;
 
 namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
 {
     public class InventoryPanel : MonoInjecter
     {
-        [Inject("userInventory")]
-        private readonly InventoryData _inventoryData;
-        
         [Inject]
-        private readonly SignalController _signalController;
+        private readonly InventoryController _inventoryController;
         
         [Inject]
         private readonly InventoryUIItem.Factory _inventoryUIItemFactory;
@@ -27,40 +23,22 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
         {
             base.Awake();
 
-            SubscribeEvents();
+            InitializePanel();
         }
 
-        private void SubscribeEvents()
+        private void InitializePanel()
         {
-            _signalController.Subscribe<UserInventoryFetchedSignal>(OnUserInventoryFetched);
-        }
-
-        private void OnUserInventoryFetched(UserInventoryFetchedSignal _)
-        {
-            InitializePanel(_inventoryData);
-        }
-
-        private void InitializePanel(InventoryData inventoryData)
-        {
-            if (inventoryData.items == null || inventoryData.items.Count == 0)
+            InventoryItem[] inventoryItems = _inventoryController.GetUserInventoryItems();
+            
+            if (inventoryItems == null || inventoryItems.Length == 0)
             {
                 return;
             }
 
-            for (int index = 0; index < inventoryData.items.Count; index++)
+            for (int index = 0; index < inventoryItems.Length; index++)
             {
-                _inventoryUIItemFactory.Create(_inventoryUIItemPrefab, _content, inventoryData.items[index]);
+                _inventoryUIItemFactory.Create(_inventoryUIItemPrefab, _content, inventoryItems[index]);
             }
-        }
-
-        private void UnsubscribeEvents()
-        {
-            _signalController.Unsubscribe<UserInventoryFetchedSignal>(OnUserInventoryFetched);
-        }
-
-        private void OnDestroy()
-        {
-            UnsubscribeEvents();
         }
     }
 }

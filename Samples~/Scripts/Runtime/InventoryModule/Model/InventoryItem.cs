@@ -2,7 +2,7 @@
 
 namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Model
 {
-    public readonly struct InventoryItem
+    public class InventoryItem
     {
         public readonly int Type;
         public readonly int Value;

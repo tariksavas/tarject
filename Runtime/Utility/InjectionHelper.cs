@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Tarject.Runtime.Core.Context;
 using Tarject.Runtime.Core.Injecter;
@@ -43,18 +44,42 @@ namespace Tarject.Runtime.Utility
                 {
                     Type elementType = parameterType.GetElementType();
 
-                    object[] parameterObjects = container.ResolveAll<object>(elementType, injectAttribute?.Id);
-                    if (parameterObjects == null)
+                    object[] elementObjects = container.ResolveAll<object>(elementType, injectAttribute?.Id);
+                    object[] arrayObjects = container.ResolveAll<object>(parameterType, injectAttribute?.Id);
+                    
+                    if (elementObjects == null && arrayObjects == null)
                     {
-                        Debug.LogError($"Can not resolve depenceny! Type: {type} --- DependencyType: {elementType}");
+                        Debug.LogError($"Can not resolve depenceny! Type: {type} --- DependencyType: {parameterType}");
                         return false;
                     }
-
-                    Array parameterArray = Array.CreateInstance(elementType, parameterObjects.Length);
-
-                    for (int index = 0; index < parameterObjects.Length; index++)
+                    
+                    List<object> combinedList = new List<object>();
+                    
+                    if (elementObjects is { Length: > 0 })
                     {
-                        parameterArray.SetValue(parameterObjects[index], index);
+                        combinedList.AddRange(elementObjects);
+                    }
+                    
+                    if (arrayObjects is { Length: > 0 })
+                    {
+                        for (int arrayObjectIndex = 0; arrayObjectIndex < arrayObjects.Length; arrayObjectIndex++)
+                        {
+                            if (arrayObjects[arrayObjectIndex] is not Array array)
+                            {
+                                continue;
+                            }
+
+                            for (int arrayIndex = 0; arrayIndex < array.Length; arrayIndex++)
+                            {
+                                combinedList.Add(array.GetValue(arrayIndex));
+                            }
+                        }
+                    }
+                    
+                    Array parameterArray = Array.CreateInstance(elementType, combinedList.Count);
+                    for (int index = 0; index < combinedList.Count; index++)
+                    {
+                        parameterArray.SetValue(combinedList[index], index);
                     }
 
                     Array.Resize(ref objects, objects.Length + 1);

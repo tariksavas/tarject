@@ -5,14 +5,22 @@ namespace Tarject.Tests.Editor.Core
 {
     public class ContainerTest : TarjectUnitTestFixture
     {
+        private const string ID = "testId";
+        private const string INSTANCE_NAME = "testInstance";
+        private const string ARRAY_INSTANCE_NAME_FIRST = "testArrayInstance1";
+        private const string ARRAY_INSTANCE_NAME_SECOND = "testArrayInstance2";
+        
         protected override void Setup()
         {
             Container.Bind<BindTestClass>();
 
-            BindFromInstanceTestClass instance = new BindFromInstanceTestClass("testInstance");
+            BindFromInstanceTestClass instance = new BindFromInstanceTestClass(INSTANCE_NAME);
             Container.BindFromInstance(instance);
 
-            Container.Bind<BindWithIdTestClass>().WithId("testId");
+            BindFromInstanceTestClass[] arrayInstance = { new(ARRAY_INSTANCE_NAME_FIRST), new(ARRAY_INSTANCE_NAME_SECOND) };
+            Container.BindFromInstance(arrayInstance);
+
+            Container.Bind<BindWithIdTestClass>().WithId(ID);
 
             Container.Bind<BindToInterfaceTestFirstClass>().ToInterface<IBindToInterfaceTestInterface>();
             Container.Bind<BindToInterfaceTestSecondClass>().ToInterface<IBindToInterfaceTestInterface>();
@@ -29,17 +37,26 @@ namespace Tarject.Tests.Editor.Core
         }
 
         [Test]
-        public void Resolve_BindFromInstance()
+        public void Resolve_Bind_From_Instance()
         {
             BindFromInstanceTestClass bindFromInstanceTestClass = Container.Resolve<BindFromInstanceTestClass>();
 
-            Assert.IsTrue(bindFromInstanceTestClass.Name == "testInstance");
+            Assert.IsTrue(bindFromInstanceTestClass.Name == INSTANCE_NAME);
+        }
+
+        [Test]
+        public void Resolve_Bind_Array_From_Instance()
+        {
+            BindFromInstanceTestClass[] bindFromInstanceTestClass = Container.Resolve<BindFromInstanceTestClass[]>();
+
+            Assert.IsTrue(bindFromInstanceTestClass[0].Name == ARRAY_INSTANCE_NAME_FIRST);
+            Assert.IsTrue(bindFromInstanceTestClass[1].Name == ARRAY_INSTANCE_NAME_SECOND);
         }
 
         [Test]
         public void Resolve_Bind_WithId()
         {
-            BindWithIdTestClass bindWithIdTestClass = Container.Resolve<BindWithIdTestClass>(id: "testId");
+            BindWithIdTestClass bindWithIdTestClass = Container.Resolve<BindWithIdTestClass>(id: ID);
 
             Assert.IsNotNull(bindWithIdTestClass);
         }
