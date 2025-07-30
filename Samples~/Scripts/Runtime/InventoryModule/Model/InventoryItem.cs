@@ -5,16 +5,14 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.Model
     public class InventoryItem
     {
         public readonly int Type;
-        public readonly int Value;
 
         public readonly string ItemName;
 
         public readonly Color ItemColor;
 
-        public InventoryItem(int type, int value, string itemName, Color itemColor)
+        public InventoryItem(int type, string itemName, Color itemColor)
         {
             Type = type;
-            Value = value;
             ItemName = itemName;
             ItemColor = itemColor;
         }

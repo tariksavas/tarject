@@ -1,9 +1,9 @@
-﻿namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
+﻿using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Model;
+
+namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
 {
     public interface IConfigurationService
     {
-        string GetUserIdConfiguration();
-
-        string GetUserNameConfiguration();
+        PlayerSaveData[] GetPlayerSaveDatas();
     }
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Tarject.Runtime.Core.Instantiator;
+using UnityEngine;
 
 namespace Tarject.Runtime.Core.Context
 {
@@ -30,6 +31,13 @@ namespace Tarject.Runtime.Core.Context
         protected override void SetParentContainer()
         {
             Container.SetParentContainer(null);
+
+            InstallBindings();
+        }
+
+        private void InstallBindings()
+        {
+            Container.Bind<GameObjectInstantiator>().ToInterface<IInstantiator>().Lazy();
         }
     }
 }

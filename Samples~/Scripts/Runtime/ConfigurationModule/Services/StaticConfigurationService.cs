@@ -1,17 +1,13 @@
 ﻿using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Config;
+using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Model;
 
 namespace Tarject.Samples.Scripts.Runtime.ConfigurationModule.Services
 {
     public class StaticConfigurationService : IConfigurationService
     {
-        public string GetUserIdConfiguration()
+        public PlayerSaveData[] GetPlayerSaveDatas()
         {
-            return UserConfigs.USER_ID;
-        }
-
-        public string GetUserNameConfiguration()
-        {
-            return UserConfigs.USER_NAME;
+            return PlayerConfigs.PlayerSaveDatas;
         }
     }
 }

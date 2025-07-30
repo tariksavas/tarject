@@ -1,14 +1,14 @@
-﻿using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Service;
+﻿using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Model;
 
 namespace Tarject.Samples.Scripts.Runtime.Signal
 {
     public readonly struct GameDataLoadedSignal
     {
-        public readonly IGameSaveDataService[] GameSaveDataServices;
+        public readonly PlayerSaveData PlayerSaveData;
 
-        public GameDataLoadedSignal(IGameSaveDataService[] gameSaveDataServices)
+        public GameDataLoadedSignal(PlayerSaveData playerSaveData)
         {
-            GameSaveDataServices = gameSaveDataServices;
+            PlayerSaveData = playerSaveData;
         }
     }
 }

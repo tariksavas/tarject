@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Model;
 
 namespace Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Service
 {
     public class RemoteGameSaveDataService : IGameSaveDataService
     {
-        public void Load()
+        public bool Save()
         {
-            Debug.Log($"[PROOF] - RemoteGameSaveDataService --> Called RemoteGameSaveDataService Load func");
+            return true;
+        }
+        
+        public PlayerSaveData Load(string saveName)
+        {
+            return null;
         }
 
-        public void Save()
+        public PlayerSaveData[] GetPlayerSaveDatas()
         {
-            Debug.Log($"[PROOF] - RemoteGameSaveDataService --> Called RemoteGameSaveDataService Save func");
+            return Array.Empty<PlayerSaveData>();
         }
     }
 }

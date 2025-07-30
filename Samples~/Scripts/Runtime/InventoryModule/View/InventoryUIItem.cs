@@ -1,12 +1,17 @@
 ﻿using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Runtime.Core.Factory;
+using Tarject.Runtime.Core.Injecter;
+using Tarject.Samples.Scripts.Runtime.InventoryModule.Controller;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
 {
-    public class InventoryUIItem : MonoBehaviour, IFactorable<InventoryItem>
+    public class InventoryUIItem : MonoBehaviour, IFactorable<UserItem>
     {
+        [Inject]
+        private readonly InventoryController _inventoryController;
+        
         [SerializeField]
         private Text _itemNameText;
         [SerializeField]
@@ -15,20 +20,22 @@ namespace Tarject.Samples.Scripts.Runtime.InventoryModule.View
         [SerializeField]
         private Image _itemImage;
 
-        public void InitializeFactory(InventoryItem inventoryItem)
+        public void InitializeFactory(UserItem userItem)
         {
-            InitializeItem(inventoryItem);
+            InventoryItem inventoryItem = _inventoryController.GetInventoryItemByType(userItem.Type);
+            
+            InitializeView(inventoryItem.ItemName, userItem.Value, inventoryItem.ItemColor);
         }
 
-        private void InitializeItem(InventoryItem inventoryItem)
+        private void InitializeView(string itemName, int itemCount, Color itemColor)
         {
-            _itemNameText.text = inventoryItem.ItemName;
-            _itemCountText.text = inventoryItem.Value.ToString();
+            _itemNameText.text = itemName;
+            _itemCountText.text = itemCount.ToString();
 
-            _itemImage.color = inventoryItem.ItemColor;
+            _itemImage.color = itemColor;
         }
 
-        public class Factory : SeparatedGameObjectFactory<InventoryUIItem, InventoryItem>
+        public class Factory : SeparatedGameObjectFactory<InventoryUIItem, UserItem>
         {
 
         }

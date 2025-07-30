@@ -2,7 +2,7 @@
 using Tarject.Samples.Scripts.Runtime.InventoryModule.Controller;
 using Tarject.Samples.Scripts.Runtime.InventoryModule.Model;
 using Tarject.Editor.TestFramework.UnitTest;
-using UnityEngine;
+using Tarject.Samples.Scripts.Runtime.ConfigurationModule.Config;
 
 namespace Tarject.Samples.Scripts.Tests.InventoryModule
 {
@@ -12,26 +12,19 @@ namespace Tarject.Samples.Scripts.Tests.InventoryModule
         {
             Container.Bind<InventoryController>();
             
-            InventoryItem[] inventoryItems =  new InventoryItem[]
-            {
-                new InventoryItem(0, 2, "Sword", Color.blue),
-                new InventoryItem(1, 1, "Armor", Color.green),
-                new InventoryItem(2, 5, "Potion", Color.red)
-            };
-            
-            Container.BindFromInstance(inventoryItems);
+            Container.BindFromInstance(PlayerConfigs.InventoryItems);
         }
         
-        [Test]
-        public void Fetch_User_Inventory()
+        [TestCase(0)]
+        [TestCase(1)]
+        [TestCase(2)]
+        public void Get_Inventory_Item(int itemType)
         {
             InventoryController inventoryController = Container.Resolve<InventoryController>();
             
-            InventoryItem[] inventoryItems = inventoryController.GetUserInventoryItems();
+            InventoryItem inventoryItem = inventoryController.GetInventoryItemByType(itemType);
             
-            Assert.IsNotNull(inventoryController);
-            Assert.IsNotNull(inventoryItems);
-            Assert.IsTrue(inventoryItems.Length == 3);
+            Assert.IsNotNull(inventoryItem);
         }
     }
 }

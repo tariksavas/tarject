@@ -1,9 +1,13 @@
-﻿namespace Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Service
+﻿using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Model;
+
+namespace Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Service
 {
     public interface IGameSaveDataService
     {
-        void Save();
+        bool Save();
 
-        void Load();
+        PlayerSaveData Load(string saveName);
+        
+        PlayerSaveData[] GetPlayerSaveDatas();
     }
 }

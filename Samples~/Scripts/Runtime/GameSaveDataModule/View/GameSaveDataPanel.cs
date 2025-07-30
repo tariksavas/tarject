@@ -1,52 +1,39 @@
 using Tarject.Runtime.Core.Injecter;
-using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Controller;
+using Tarject.Runtime.Core.Instantiator;
+using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Model;
+using Tarject.Samples.Scripts.Runtime.GameSaveDataModule.Service;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Tarject.Samples.Scripts.Runtime.GameSaveDataModule.View
 {
     public class GameSaveDataPanel : MonoInjecter
     {
         [Inject]
-        private readonly GameSaveDataController _gameSaveDataController;
+        private readonly IInstantiator _instantiator;
+        
+        [Inject]
+        private readonly IGameSaveDataService _gameSaveDataService;
+        
+        [SerializeField]
+        private Transform _content;
 
         [SerializeField]
-        private Button _saveButton;
-        [SerializeField]
-        private Button _loadButton;
+        private PlayerSaveUIItem _playerSaveUIItemPrefab;
 
         protected override void Awake()
         {
             base.Awake();
 
-            SubscribeEvents();
+            InitializeView();
         }
 
-        private void SubscribeEvents()
+        private void InitializeView()
         {
-            _saveButton.onClick.AddListener(OnSaveButtonClicked);
-            _loadButton.onClick.AddListener(OnLoadButtonClicked);
-        }
-
-        private void OnSaveButtonClicked()
-        {
-            _gameSaveDataController.Save();
-        }
-
-        private void OnLoadButtonClicked()
-        {
-            _gameSaveDataController.Load();
-        }
-
-        private void UnsubscribeEvents()
-        {
-            _saveButton.onClick.RemoveListener(OnSaveButtonClicked);
-            _loadButton.onClick.RemoveListener(OnLoadButtonClicked);
-        }
-
-        private void OnDestroy()
-        {
-            UnsubscribeEvents();
+            PlayerSaveData[] datas = _gameSaveDataService.GetPlayerSaveDatas();
+            for (int index = 0; index < datas.Length; index++)
+            {
+                _instantiator.Create(_playerSaveUIItemPrefab, datas[index], _content);
+            }
         }
     }
 }
