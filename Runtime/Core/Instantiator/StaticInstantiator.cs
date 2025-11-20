@@ -26,7 +26,11 @@ namespace Tarject.Runtime.Core.Instantiator
             }
 
             T createdObject = Object.Instantiate(prefab, tempParent);
-            container ??= createdObject.gameObject.scene.GetSceneContainer();
+            
+            container ??= parent == null 
+                ? createdObject.gameObject.scene.GetSceneContainer()
+                : parent.gameObject.scene.GetSceneContainer();
+            
             createdObject.InjectToFields(container);
 
             if (createdObject is MonoInjecter monoInjecter)
