@@ -24,7 +24,13 @@ namespace Tarject.Runtime.Core.Context
                 return container;
             }
 
-            return ProjectContext.Instance.Container;
+            return GetActiveSceneContainer();
+        }
+        
+        public static DIContainer GetActiveSceneContainer()
+        {
+            Scene activeScene = SceneManager.GetActiveScene();
+            return activeScene.GetSceneContainer();
         }
     }
 }
